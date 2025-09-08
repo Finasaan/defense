@@ -1,8 +1,8 @@
 \documentclass[12pt]{article}
 \usepackage[a4paper, margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
+\usepackage{algorithmic}
 \usepackage{textcomp}
 \usepackage{url}
 \usepackage{booktabs}
@@ -44,7 +44,7 @@
 
 % ---------- Abstract ----------
 \begin{abstract}
-Financial literacy remains a critical challenge in Pakistan, with significant barriers to formal financial services access and adequate financial education. According to Standard \& Poor's Global Financial Survey, only 33\% of individuals worldwide are financially educated, while Pakistan shows far lower rates with barely 13\% of the population holding formal bank accounts and more than half (53\%) of adults being financially excluded \cite{pafec2024}. This proposal presents Finasaan, an innovative AI-powered mobile and web application designed to address Pakistan's financial literacy gap through an adaptive dual-interface approach. The platform caters to users across different literacy levels by providing beginner-friendly interfaces with chatbot assistance alongside advanced analytical tools for experienced users. Finasaan integrates real-time data from Pakistan Stock Exchange (PSX), local insurance providers, mutual funds, and taxation policies to deliver personalized financial guidance. The system employs fine-tuned large language models (LLMs) for natural language processing and recommendation engines tailored to the Pakistani financial landscape. Unlike existing solutions that are either overly technical or overly simplistic, Finasaan bridges the gap by offering context-aware, culturally relevant financial education and decision-making tools. The project aligns with UN Sustainable Development Goals 4 (Quality Education) and 8 (Decent Work and Economic Growth), potentially impacting millions of Pakistanis by democratizing access to financial knowledge and tools.
+Financial literacy remains a critical challenge in Pakistan, with significant barriers to formal financial services access and adequate financial education. According to Standard \& Poor's Global Financial Survey, only 33\% of individuals worldwide are financially educated, while Pakistan shows far lower rates with barely 13\% of the population holding formal bank accounts and more than half (53\%) of adults being financially excluded \cite{pafec2024}. This proposal presents Finasaan, an innovative AI-powered mobile and web application designed to address Pakistan's financial literacy gap through an adaptive dual-interface approach. The platform caters to users across different literacy levels by providing beginner-friendly interfaces with personalized learning chatbot assistance alongside advanced analytical tools for experienced users. Finasaan integrates daily-updated financial data from Pakistan Stock Exchange (PSX), local insurance providers, mutual funds, and taxation policies, along with relevant financial news, to deliver personalized financial guidance. The system employs Retrieval Augmented Generation (RAG) with adaptive response mechanisms that maintain user knowledge profiles to deliver contextually appropriate explanations and recommendation engines tailored to the Pakistani financial landscape. Unlike existing solutions that are either overly technical or overly simplistic, Finasaan bridges the gap by offering context-aware, culturally relevant financial education and decision-making tools. The project aligns with UN Sustainable Development Goals 4 (Quality Education) and 8 (Decent Work and Economic Growth), potentially impacting millions of Pakistanis by democratizing access to financial knowledge and tools.
 \end{abstract}
 
 % ---------- Keywords ----------
@@ -52,7 +52,7 @@ Financial literacy remains a critical challenge in Pakistan, with significant ba
 
 % ---------- Main Sections ----------
 \section{Introduction}
-Financial literacy represents a fundamental pillar of economic development and individual prosperity. In Pakistan, a nation of over 220 million people, the financial literacy landscape presents significant challenges that hinder economic growth and individual financial well-being. According to the State Bank of Pakistan's 2021 Financial Inclusion Survey, only 21\% of adults have access to formal financial services \cite{sbp2021,beltway2024,karandaaz2024}. Furthermore, according to Standard \& Poor's Global Financial Survey, only 33\% of individuals worldwide are financially educated, with Pakistan showing far lower rates. More than half (53\%) of the adult population in Pakistan is financially excluded, with only 2.4\% of the population having access to credit through traditional financial institutions. The majority of Pakistanis remain unfamiliar with financial management concepts such as budgeting, saving, and investing \cite{pafec2024}. The advent of artificial intelligence and mobile technology presents unprecedented opportunities to revolutionize financial education and accessibility. However, existing solutions in the Pakistani market fail to address the diverse needs of users with varying levels of financial knowledge and technological proficiency. This gap necessitates an innovative approach that combines advanced AI capabilities with culturally sensitive, adaptive user experiences. Finasaan emerges as a comprehensive solution designed to bridge this critical gap by offering an AI-powered platform that adapts to individual user literacy levels while providing access to real-time financial data and personalized recommendations. The platform's dual-interface approach ensures accessibility for both novice users seeking basic financial education and advanced users requiring sophisticated analytical tools. This paper presents the design, implementation strategy, and expected impact of Finasaan, demonstrating how AI-driven adaptive interfaces can transform financial literacy in developing economies like Pakistan.
+Financial literacy represents a fundamental pillar of economic development and individual prosperity. In Pakistan, a nation of over 220 million people, the financial literacy landscape presents significant challenges that hinder economic growth and individual financial well-being. According to the State Bank of Pakistan's 2021 Financial Inclusion Survey, only 21\% of adults have access to formal financial services \cite{sbp2021,beltway2024,karandaaz2024}. Furthermore, according to Standard \& Poor's Global Financial Survey, only 33\% of individuals worldwide are financially educated, with Pakistan showing far lower rates. More than half (53\%) of the adult population in Pakistan is financially excluded, with only 2.4\% of the population having access to credit through traditional financial institutions. The majority of Pakistanis remain unfamiliar with financial management concepts such as budgeting, saving, and investing \cite{pafec2024}. The advent of artificial intelligence and mobile technology presents unprecedented opportunities to revolutionize financial education and accessibility. However, existing solutions in the Pakistani market fail to address the diverse needs of users with varying levels of financial knowledge and technological proficiency. This gap necessitates an innovative approach that combines advanced AI capabilities with culturally sensitive, adaptive user experiences. Finasaan emerges as a comprehensive solution designed to bridge this critical gap by offering an AI-powered platform that adapts to individual user literacy levels while providing access to daily-updated financial data and personalized recommendations. The platform's dual-interface approach ensures accessibility for both novice users seeking basic financial education and advanced users requiring sophisticated analytical tools. This paper presents the design, implementation strategy, and expected impact of Finasaan, demonstrating how AI-driven adaptive interfaces can transform financial literacy in developing economies like Pakistan.
 
 \section{Problem Statement}
 Pakistan's financial landscape is characterized by several interconnected challenges that collectively contribute to widespread financial exclusion and poor economic decision-making:
@@ -113,7 +113,7 @@ The low participation is particularly striking among:
     \item Small business owners who understand commerce but not financial markets
 \end{itemize}
 
-This participation gap stems directly from financial illiteracy, fear of market volatility, lack of accessible educational resources, and absence of user-friendly platforms that can guide novice investors. Finasaan addresses this critical gap by providing adaptive education, real-time market insights, and culturally relevant investment guidance that can transform Pakistan's capital market participation rates.
+This participation gap stems directly from financial illiteracy, fear of market volatility, lack of accessible educational resources, and absence of user-friendly platforms that can guide novice investors. Finasaan addresses this critical gap by providing adaptive education, daily-updated market insights with relevant financial news, and culturally relevant investment guidance that can transform Pakistan's capital market participation rates.
 
 \subsection{Mutual Fund Investment Disparity and Returns Analysis}
 The mutual fund industry in Pakistan, while showing growth, reveals significant participation gaps and suboptimal asset allocation decisions by individual investors. According to the Mutual Funds Association of Pakistan (MUFAP) July 2025 report, the total Assets Under Management (AUM) reached PKR 3.97 trillion, yet individual investor participation remains disproportionately low \cite{mufap2025}.
@@ -164,7 +164,7 @@ The financial decision-making patterns revealed by the data demonstrate a substa
     \item Concentration risk in single asset classes rather than diversified portfolios
 \end{itemize}
 
-\textbf{Digital Adoption Gap:} With only 20,537 total digital mutual fund accounts managing PKR 438.6 billion \cite{mufap2025}, Pakistan demonstrates significant digital financial services underutilization. This digital gap represents a systemic barrier to accessing modern portfolio management, automated rebalancing, and real-time performance monitoring that sophisticated investors utilize to optimize returns.
+\textbf{Digital Adoption Gap:} With only 20,537 total digital mutual fund accounts managing PKR 438.6 billion \cite{mufap2025}, Pakistan demonstrates significant digital financial services underutilization. This digital gap represents a systemic barrier to accessing modern portfolio management, automated rebalancing, and daily performance monitoring that sophisticated investors utilize to optimize returns.
 
 \begin{figure}[h]
 \centering
@@ -316,7 +316,7 @@ Understanding user preferences for financial app features helps validate Finasaa
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{app_feature_usage.png}
-\caption{Desired Financial App Features - Demonstrating demand for educational content, real-time data, and personalized guidance}
+\caption{Desired Financial App Features - Demonstrating demand for educational content, updated market data, and personalized guidance}
 \label{fig:app_features}
 \end{figure}
 
@@ -329,32 +329,32 @@ The survey data provides compelling evidence for several key conclusions:
 
 \textbf{Target Demographic Alignment:} The concentration of responses in the 18-24 age group with diverse income levels aligns perfectly with Finasaan's adaptive interface approach.
 
-\textbf{Feature Validation:} User preferences for educational content, real-time data, and personalized guidance directly correspond to Finasaan's AI-powered capabilities.
+\textbf{Feature Validation:} User preferences for educational content, updated market data, and personalized guidance directly correspond to Finasaan's AI-powered capabilities.
 
 \textbf{Barrier Elimination Strategy:} The identification of knowledge and guidance barriers as primary obstacles validates Finasaan's chatbot and adaptive learning approach.
 
 This research conclusively demonstrates that Pakistan's young adult population possesses both the motivation and demographic characteristics necessary for successful financial literacy platform adoption, while simultaneously revealing critical gaps that Finasaan is uniquely positioned to address.
 
 \section{Proposed Solution}
-Finasaan addresses the identified challenges through a comprehensive AI-powered platform that combines adaptive user interfaces, real-time financial data integration, and personalized learning experiences.
+Finasaan addresses the identified challenges through a comprehensive AI-powered platform that combines adaptive user interfaces, daily-updated financial data integration, and personalized learning experiences.
 
 \subsection{Core Architecture}
 
 The platform employs a dual-interface approach designed to serve users across the entire spectrum of financial literacy:
 
-\textbf{Beginner-Friendly Interface:} Features simplified navigation, visual learning aids, interactive tutorials, and an AI-powered chatbot that explains complex financial concepts in plain Urdu and English. The interface uses progressive disclosure techniques to gradually introduce more advanced concepts as users demonstrate increased proficiency.
+\textbf{Beginner-Friendly Interface:} Features simplified navigation, visual learning aids, interactive tutorials, and an AI-powered personalized learning chatbot that explains complex financial concepts in English. The interface uses progressive disclosure techniques to gradually introduce more advanced concepts as users demonstrate increased proficiency.
 
-\textbf{Advanced User Interface:} Provides comprehensive analytical tools, real-time market data, advanced calculators, and detailed comparative analyses for experienced users who require sophisticated decision-making support.
+\textbf{Advanced User Interface:} Provides comprehensive analytical tools, daily-updated market data, advanced calculators, and detailed comparative analyses for experienced users who require sophisticated decision-making support.
 
 \subsection{AI-Powered Components}
 
 \subsubsection{Intelligent Chatbot System}
-A fine-tuned large language model (LLM) specifically adapted for Pakistani financial contexts, capable of:
+A Retrieval Augmented Generation (RAG) system that maintains individual user knowledge profiles and adapts responses based on demonstrated literacy levels, specifically designed for Pakistani financial contexts and focused on personalized learning experiences. The system is capable of:
 \begin{itemize}
-    \item Explaining financial concepts in multiple languages
-    \item Providing context-aware recommendations
-    \item Guiding users through complex financial decisions
-    \item Adapting communication style based on user literacy level
+    \item Explaining financial concepts in English with adaptive complexity based on user's stored knowledge profile
+    \item Providing personalized learning recommendations that evolve based on user progress and comprehension patterns
+    \item Guiding users through complex financial decisions step-by-step with context-appropriate explanations
+    \item Maintaining memory of user interactions to consistently deliver knowledge-level-appropriate responses and avoid repetitive explanations
 \end{itemize}
 
 \subsubsection{Personalization Engine}
@@ -368,7 +368,7 @@ Machine learning algorithms that analyze user behavior, learning patterns, and p
 
 \subsection{Integrated Financial Modules}
 
-\textbf{Pakistan Stock Exchange (PSX) Integration:} Real-time stock data, company fundamentals, sector analysis, and simplified investment guidance.
+\textbf{Pakistan Stock Exchange (PSX) Integration:} Daily-updated stock data, company fundamentals, sector analysis, relevant financial news, and simplified investment guidance.
 
 \textbf{Insurance Module:} Comparison tools for health, life, and property insurance products from Pakistani providers, with educational content about insurance concepts.
 
@@ -405,7 +405,7 @@ This section examines existing financial literacy and fintech solutions in both 
 
 \textbf{NerdWallet:} Provides excellent financial education content and comparison tools but is designed for the US market, with limited applicability to Pakistani financial products and regulations \cite{nerdwallet2023}.
 
-\textbf{Khan Academy Financial Literacy:} Offers high-quality educational content but lacks interactive tools and real-time data integration necessary for practical financial decision-making \cite{khan2023}.
+\textbf{Khan Academy Financial Literacy:} Offers high-quality educational content but lacks interactive tools and daily-updated data integration necessary for practical financial decision-making \cite{khan2023}.
 
 \subsection{Research Gap}
 
@@ -413,7 +413,7 @@ The analysis reveals a significant gap in the market for platforms that combine:
 \begin{itemize}
     \item Local market integration and regulatory compliance
     \item Adaptive interfaces for diverse literacy levels
-    \item Real-time data with educational context
+    \item Daily-updated data with educational context and relevant financial news
     \item AI-powered personalization for Pakistani users
     \item Comprehensive coverage of all financial domains
 \end{itemize}
@@ -459,7 +459,7 @@ The Finasaan platform adopts a modern, scalable architecture designed to handle 
 \end{itemize}
 
 \subsubsection{Backend Infrastructure}
-\textbf{Technology Stack:} Express.js with Node.js, RESTful API architecture, microservices pattern for scalability.
+\textbf{Technology Stack:} Hono.js framework with Node.js runtime, RESTful API architecture, microservices pattern for scalability.
 
 \textbf{Core Services:}
 \begin{itemize}
@@ -471,21 +471,24 @@ The Finasaan platform adopts a modern, scalable architecture designed to handle 
 \end{itemize}
 
 \subsubsection{Database Design}
-\textbf{Primary Database:} MySQL for transactional data, user profiles, and financial records.
+\textbf{Primary Database:} MySQL for transactional data, user profiles, financial records, and user knowledge profiling data including comprehension levels and learning progress tracking.
 
 \textbf{Supporting Systems:}
 \begin{itemize}
-    \item Redis for caching and session management
-    \item MongoDB for storing unstructured AI training data
+    \item Redis for caching, session management, and rapid user profile retrieval
+    \item MongoDB for storing unstructured financial knowledge base content and user interaction logs
+    \item Vector database for RAG content embeddings and similarity matching
     \item Time-series database for financial market data
 \end{itemize}
 
 \subsubsection{AI/ML Components}
-\textbf{Language Models:} Fine-tuned transformer models based on existing LLM architectures, specialized for Pakistani financial content and multilingual support.
+\textbf{Retrieval Augmented Generation (RAG) System:} A sophisticated architecture that combines pre-trained language models with curated Pakistani financial knowledge bases and dynamic user profiling. The system maintains individual user knowledge profiles that track comprehension levels, learning progress, and interaction patterns to deliver consistently appropriate responses without requiring model fine-tuning.
 
-\textbf{Recommendation System:} Collaborative filtering combined with content-based filtering for personalized suggestions.
+\textbf{User Knowledge Profiling:} Memory system that stores and analyzes user interactions to determine optimal response complexity, preferred learning styles, and conceptual understanding levels. This enables persistent personalization across sessions while maintaining response consistency.
 
-\textbf{Natural Language Processing:} Multilingual NLP pipeline for understanding user queries in Urdu and English.
+\textbf{Recommendation System:} Collaborative filtering combined with content-based filtering for personalized suggestions, enhanced by user knowledge profiles for appropriate complexity matching.
+
+\textbf{Natural Language Processing:} Multilingual NLP pipeline for understanding user queries in Urdu and English, integrated with knowledge-level detection for response adaptation.
 
 \subsection{Data Integration Strategy}
 
@@ -525,7 +528,7 @@ The project is structured as a collaborative effort among three team members, ea
 \begin{itemize}
     \item Full-stack application architecture design and implementation
     \item AI/ML model research, development, and optimization
-    \item LLM fine-tuning and adaptation for Pakistani financial context
+    \item RAG system implementation and user knowledge profile management
     \item Machine learning pipeline development for recommendation systems
     \item Cross-platform integration between web and mobile applications
     \item Performance optimization and scalability planning
@@ -541,7 +544,7 @@ The project is structured as a collaborative effort among three team members, ea
     \item AI/ML model deployment and inference optimization
     \item Security framework implementation and data encryption
     \item Cloud infrastructure setup and DevOps management
-    \item Real-time data processing and caching strategies
+    \item Daily data processing and caching strategies
 \end{itemize}
 
 \textbf{Syed Aman Hussain - UI/UX Design Lead \& Frontend Development Specialist:}
@@ -567,6 +570,13 @@ The project is structured as a collaborative effort among three team members, ea
 \textbf{Phase 4 (Months 7-8):} Testing, optimization, security implementation, and deployment.
 
 \textbf{Phase 5 (Months 9-10):} User testing, feedback integration, and final deployment.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{project_timeline_gantt.png}
+\caption{Project Development Timeline - Gantt Chart showing detailed phase breakdown and milestone scheduling across the 10-month development period}
+\label{fig:gantt_chart}
+\end{figure}
 
 \subsection{Collaborative Development Approach}
 
@@ -659,9 +669,9 @@ The platform promotes sustained, inclusive, and sustainable economic growth by e
 
 \textbf{Scalability:} Managing high user loads during peak times requires robust infrastructure planning and implementation of efficient caching strategies.
 
-\textbf{Data Accuracy:} Ensuring real-time financial data accuracy demands reliable data sources and validation mechanisms.
+\textbf{Data Accuracy:} Ensuring daily financial data accuracy demands reliable data sources and validation mechanisms.
 
-\textbf{AI Model Performance:} Maintaining chatbot accuracy across different user literacy levels requires continuous model training and refinement.
+\textbf{RAG System Performance:} Maintaining response quality and consistency across different user literacy levels requires continuous knowledge base updates, user profile accuracy validation, and retrieval optimization to ensure appropriate content selection.
 
 \subsection{Regulatory and Compliance Challenges}
 
@@ -673,10 +683,10 @@ The platform promotes sustained, inclusive, and sustainable economic growth by e
 
 \textbf{Digital Literacy:} Addressing varying levels of digital literacy among target users requires extensive user testing and interface optimization.
 
-\textbf{Trust Building:} Establishing user trust in AI-powered financial advice requires transparent communication and proven accuracy in recommendations.
+\textbf{Trust Building:} Establishing user trust in RAG-powered financial guidance requires transparent explanation of information sources, consistent response quality across knowledge levels, and demonstrated reliability in personalized recommendations.
 
 \section{Conclusion}
-Finasaan represents a paradigm shift in addressing Pakistan's financial literacy challenges through innovative AI-powered technology. By combining adaptive user interfaces, real-time financial data integration, and personalized learning experiences, the platform addresses critical gaps in the current financial education landscape.
+Finasaan represents a paradigm shift in addressing Pakistan's financial literacy challenges through innovative AI-powered technology. By combining adaptive user interfaces, daily-updated financial data integration, and personalized learning experiences, the platform addresses critical gaps in the current financial education landscape.
 
 The project's significance extends beyond technical innovation to encompass substantial social impact potential. Through its alignment with UN Sustainable Development Goals and focus on financial inclusion, Finasaan has the potential to transform how millions of Pakistanis interact with and understand financial systems. The platform's comprehensive approach addresses critical gaps ranging from basic financial literacy to sophisticated retirement planning, potentially preventing a looming retirement security crisis affecting Pakistan's 60 million workforce.
 
