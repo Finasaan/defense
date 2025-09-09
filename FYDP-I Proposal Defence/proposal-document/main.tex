@@ -356,15 +356,6 @@ A Retrieval Augmented Generation (RAG) system that maintains individual user kno
     \item Maintaining memory of user interactions to consistently deliver knowledge-level-appropriate responses and avoid repetitive explanations
 \end{itemize}
 
-\subsubsection{Personalization Engine}
-Machine learning algorithms that analyze user behavior, learning patterns, and preferences to deliver:
-\begin{itemize}
-    \item Customized content recommendations
-    \item Adaptive difficulty progression
-    \item Personalized financial goal setting
-    \item Risk-appropriate investment suggestions
-\end{itemize}
-
 \subsection{Integrated Financial Modules}
 
 \textbf{Pakistan Stock Exchange (PSX) Integration:} Daily-updated stock data, company fundamentals, sector analysis, relevant financial news, and simplified investment guidance.
@@ -460,10 +451,11 @@ The Finasaan platform adopts a modern, scalable architecture designed to handle 
 \end{itemize}
 
 \subsubsection{Database Design}
-\textbf{Primary Database:} MongoDB for transactional data, user profiles, financial records, and user knowledge profiling data including comprehension levels and learning progress tracking.
+\textbf{Multi-Database Architecture:} The platform employs a specialized database approach, utilizing different database technologies optimized for specific use cases:
 
-\textbf{Supporting Systems:}
+\textbf{Database Systems:}
 \begin{itemize}
+    \item MongoDB for transactional data, user profiles, financial records, and user knowledge profiling data including comprehension levels and learning progress tracking
     \item PostgreSQL for structured financial data and analytics
     \item Pinecone for vector embeddings and RAG content similarity matching
 \end{itemize}
@@ -590,48 +582,14 @@ The project is structured as a collaborative effort among three team members, ea
 The team employs an agile development methodology with bi-weekly sprints, ensuring continuous integration and collaborative problem-solving. Each member contributes to cross-functional aspects while maintaining their specialized focus areas, promoting knowledge sharing and robust system development.
 
 \section{Expected Results and Impact Assessment}
-\subsection{Quantitative Metrics}
+\subsection{Market Analysis and User Targets}
 
-\textbf{User Engagement Targets:}
-\begin{itemize}
-    \item 100,000+ registered users within the first year
-    \item 70\% monthly active user retention rate
-    \item Average session duration of 15+ minutes
-    \item 80\% completion rate for educational modules
-\end{itemize}
+\textbf{Total Addressable Market (TAM):} Pakistan's adult population (18+) is approximately 140 million people as of 2024, representing the total potential market for financial literacy education.
 
-\textbf{Financial Literacy Improvement:}
-\begin{itemize}
-    \item 60\% improvement in pre/post financial literacy assessments
-    \item 40\% increase in user confidence in financial decision-making
-    \item 25\% increase in formal financial service adoption among users
-\end{itemize}
+\textbf{Serviceable Addressable Market (SAM):} With 111 million internet users and approximately 73 million smartphone users in Pakistan, our serviceable market encompasses digitally connected adults who can access Finasaan through web applications and PWA technology.
 
-\textbf{Investment Participation Enhancement:}
-\begin{itemize}
-    \item 15\% increase in mutual fund knowledge and confidence among platform users
-    \item 20\% improvement in asset allocation efficiency (measured by risk-return optimization)
-    \item 30\% increase in digital investment literacy (targeting 25,000+ users with improved knowledge)
-    \item 50\% reduction in opportunity cost through informed investment decisions (comparing platform users vs. control group)
-    \item 10\% increase in equity fund participation among conservative investors (targeting shift from 100\% Money Market to balanced portfolios)
-\end{itemize}
+\textbf{Serviceable Obtainable Market (SOM):} Targeting 1\% of smartphone users as our initial market penetration goal, representing approximately 730,000 users. This conservative estimate reflects realistic adoption rates for financial education platforms in developing markets.
 
-\textbf{Market Impact Projections:}
-\begin{itemize}
-    \item Potential increase of PKR 10-15 billion in retail mutual fund investments through improved investor education
-    \item Target contribution to achieving 0.5\% adult population stock market participation (vs. current <0.1\%)
-    \item 5,000+ users educated about PSX investment opportunities through platform-driven education campaigns
-    \item 25\% improvement in risk-adjusted returns among platform users through diversification education
-\end{itemize}
-
-\textbf{Retirement Planning Enhancement:}
-\begin{itemize}
-    \item 20\% increase in VPS knowledge and retirement planning awareness among platform users within first two years
-    \item Target contribution of PKR 5-8 billion in new VPS investments through retirement education campaigns
-    \item 40\% improvement in retirement preparedness scores among users completing pension planning modules
-    \item 15,000+ users educated about employer pension fund benefits through corporate partnership programs
-    \item Average increase of PKR 50,000-100,000 in projected retirement savings per user through early planning intervention
-\end{itemize}
 
 \subsection{Qualitative Impact}
 
@@ -676,7 +634,6 @@ The platform leverages innovative AI technology and digital infrastructure to bu
 
 \section{Challenges and Risk Mitigation}
 \subsection{Technical Challenges}
-
 \textbf{Scalability:} Managing high user loads during peak times requires robust infrastructure planning and implementation of efficient caching strategies.
 
 \textbf{Data Accuracy:} Ensuring daily financial data accuracy demands reliable data sources and validation mechanisms.
@@ -705,9 +662,6 @@ The comprehensive implementation plan, involving specialized team roles and phas
 As Pakistan continues its journey toward digital transformation and financial inclusion, Finasaan emerges as a critical tool for empowering citizens with the knowledge and tools necessary for informed financial decision-making. The project's success will not only benefit individual users but contribute to the nation's overall economic development and financial stability.
 
 Future work will focus on continuous platform enhancement based on user feedback, expansion to additional financial domains, and potential regional adaptation for other developing economies facing similar financial literacy challenges.
-
-\section*{Acknowledgment}
-The authors would like to acknowledge the support and guidance provided by the National University of Sciences and Technology (NUST) faculty, industry partners, and the Pakistan financial sector stakeholders who have contributed valuable insights to this project development. Special recognition goes to the School of Electrical Engineering and Computer Science (SEECS) for providing the academic foundation and research environment necessary for this innovative project.
 
 % ---------- References ----------
 \begin{thebibliography}{00}
