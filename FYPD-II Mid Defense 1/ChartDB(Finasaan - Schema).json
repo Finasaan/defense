@@ -1,0 +1,2317 @@
+{
+  "id": "0",
+  "name": "Finasaan - Schema",
+  "createdAt": "2025-10-22T20:56:33.103Z",
+  "updatedAt": "2025-10-22T20:57:31.063Z",
+  "databaseType": "postgresql",
+  "tables": [
+    {
+      "id": "1",
+      "name": "user_portfolio_holdings",
+      "schema": "",
+      "order": 14,
+      "fields": [
+        {
+          "id": "2",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "3",
+          "name": "portfolio_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "4",
+          "name": "company_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "5",
+          "name": "mutual_fund_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "6",
+          "name": "quantity",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "7",
+          "name": "average_purchase_price",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "8",
+          "name": "added_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "9",
+          "name": "pk_user_portfolio_holdings_id",
+          "fieldIds": [
+            "2"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 600,
+      "y": 900,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "10",
+      "name": "companies",
+      "schema": "",
+      "order": 1,
+      "fields": [
+        {
+          "id": "11",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "12",
+          "name": "symbol",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": false,
+          "primaryKey": false,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "13",
+          "name": "company_name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "14",
+          "name": "description",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "15",
+          "name": "sector_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "16",
+          "name": "website_url",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "17",
+          "name": "logo_url",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "18",
+          "name": "founded_year",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "19",
+          "name": "ceo_name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "20",
+          "name": "description_embedding",
+          "type": {
+            "id": "vector",
+            "name": "vector"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "21",
+          "name": "pk_companies_id",
+          "fieldIds": [
+            "11"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 307.5,
+      "y": -143.349609375,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "22",
+      "name": "user_watchlists",
+      "schema": "",
+      "order": 15,
+      "fields": [
+        {
+          "id": "23",
+          "name": "user_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "24",
+          "name": "company_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "25",
+          "name": "mutual_fund_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "26",
+          "name": "notes",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "27",
+          "name": "added_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "28",
+          "name": "primary",
+          "type": {
+            "id": "key",
+            "name": "key"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [],
+      "x": 900,
+      "y": 900,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "29",
+      "name": "mutual_fund_holdings",
+      "schema": "",
+      "order": 10,
+      "fields": [
+        {
+          "id": "30",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "31",
+          "name": "fund_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "32",
+          "name": "company_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "33",
+          "name": "as_of_date",
+          "type": {
+            "name": "date",
+            "id": "date",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "34",
+          "name": "percentage_of_fund",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "35",
+          "name": "shares_held",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "36",
+          "name": "pk_mutual_fund_holdings_id",
+          "fieldIds": [
+            "30"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "37",
+          "name": "idx_mutual_fund_holdings_fund_id_company_id_as_of_date",
+          "fieldIds": [
+            "31",
+            "32",
+            "33"
+          ],
+          "unique": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 600,
+      "y": 600,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "38",
+      "name": "daily_stock_data",
+      "schema": "",
+      "order": 2,
+      "fields": [
+        {
+          "id": "39",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "40",
+          "name": "company_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "41",
+          "name": "trade_date",
+          "type": {
+            "name": "date",
+            "id": "date",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "42",
+          "name": "open_price",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "43",
+          "name": "high_price",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "44",
+          "name": "low_price",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "45",
+          "name": "close_price",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "46",
+          "name": "adjusted_close_price",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "47",
+          "name": "volume",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "48",
+          "name": "value_traded",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "49",
+          "name": "pk_daily_stock_data_id",
+          "fieldIds": [
+            "39"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "50",
+          "name": "idx_daily_stock_data_company_id_trade_date",
+          "fieldIds": [
+            "40",
+            "41"
+          ],
+          "unique": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 600,
+      "y": 0,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "51",
+      "name": "insurance_policies",
+      "schema": "",
+      "order": 12,
+      "fields": [
+        {
+          "id": "52",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "53",
+          "name": "provider_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "54",
+          "name": "policy_name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "55",
+          "name": "sector_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "56",
+          "name": "description",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "57",
+          "name": "key_features",
+          "type": {
+            "name": "jsonb",
+            "id": "jsonb",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "58",
+          "name": "policy_embedding",
+          "type": {
+            "id": "vector",
+            "name": "vector"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "59",
+          "name": "pk_insurance_policies_id",
+          "fieldIds": [
+            "52"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 0,
+      "y": 900,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "60",
+      "name": "fund_providers",
+      "schema": "",
+      "order": 7,
+      "fields": [
+        {
+          "id": "61",
+          "name": "id",
+          "type": {
+            "name": "serial",
+            "id": "serial",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "62",
+          "name": "name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": false,
+          "primaryKey": false,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "63",
+          "name": "description",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "64",
+          "name": "logo_url",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "65",
+          "name": "website_url",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "66",
+          "name": "pk_fund_providers_id",
+          "fieldIds": [
+            "61"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 900,
+      "y": 300,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "67",
+      "name": "financial_reports",
+      "schema": "",
+      "order": 4,
+      "fields": [
+        {
+          "id": "68",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "69",
+          "name": "company_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "70",
+          "name": "report_type",
+          "type": {
+            "id": "report_type",
+            "name": "report_type"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "71",
+          "name": "period_type",
+          "type": {
+            "id": "report_period",
+            "name": "report_period"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "72",
+          "name": "period_end_date",
+          "type": {
+            "name": "date",
+            "id": "date",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "73",
+          "name": "fiscal_year",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "74",
+          "name": "fiscal_quarter",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "75",
+          "name": "currency",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "76",
+          "name": "source_url",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "77",
+          "name": "filed_date",
+          "type": {
+            "name": "date",
+            "id": "date",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "78",
+          "name": "report_summary_embedding",
+          "type": {
+            "id": "vector",
+            "name": "vector"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "79",
+          "name": "pk_financial_reports_id",
+          "fieldIds": [
+            "68"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "80",
+          "name": "idx_financial_reports_company_id_report_type_period_end_date",
+          "fieldIds": [
+            "69",
+            "70",
+            "72"
+          ],
+          "unique": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 3.75,
+      "y": 251.25,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "81",
+      "name": "sectors",
+      "schema": "",
+      "order": 0,
+      "fields": [
+        {
+          "id": "82",
+          "name": "id",
+          "type": {
+            "name": "serial",
+            "id": "serial",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "83",
+          "name": "name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": false,
+          "primaryKey": false,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "84",
+          "name": "description",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "85",
+          "name": "parent_sector_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "86",
+          "name": "pk_sectors_id",
+          "fieldIds": [
+            "82"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 0,
+      "y": 0,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "87",
+      "name": "mutual_funds",
+      "schema": "",
+      "order": 8,
+      "fields": [
+        {
+          "id": "88",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "89",
+          "name": "symbol",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": false,
+          "primaryKey": false,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "90",
+          "name": "name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "91",
+          "name": "provider_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "92",
+          "name": "sector_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "93",
+          "name": "description",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "94",
+          "name": "inception_date",
+          "type": {
+            "name": "date",
+            "id": "date",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "95",
+          "name": "fund_strategy_embedding",
+          "type": {
+            "id": "vector",
+            "name": "vector"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "96",
+          "name": "pk_mutual_funds_id",
+          "fieldIds": [
+            "88"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": -322.5,
+      "y": 697.5,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "97",
+      "name": "company_announcements",
+      "schema": "",
+      "order": 3,
+      "fields": [
+        {
+          "id": "98",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "99",
+          "name": "company_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "100",
+          "name": "headline",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "101",
+          "name": "body_text",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "102",
+          "name": "source_url",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "103",
+          "name": "publish_datetime",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "104",
+          "name": "announcement_embedding",
+          "type": {
+            "id": "vector",
+            "name": "vector"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "105",
+          "name": "pk_company_announcements_id",
+          "fieldIds": [
+            "98"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 900,
+      "y": 0,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "106",
+      "name": "user_portfolios",
+      "schema": "",
+      "order": 13,
+      "fields": [
+        {
+          "id": "107",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "108",
+          "name": "user_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "109",
+          "name": "name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "110",
+          "name": "description",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "111",
+          "name": "created_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "112",
+          "name": "pk_user_portfolios_id",
+          "fieldIds": [
+            "107"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 300,
+      "y": 900,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "113",
+      "name": "insurance_providers",
+      "schema": "",
+      "order": 11,
+      "fields": [
+        {
+          "id": "114",
+          "name": "id",
+          "type": {
+            "name": "serial",
+            "id": "serial",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "115",
+          "name": "name",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": false,
+          "primaryKey": false,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "116",
+          "name": "description",
+          "type": {
+            "name": "text",
+            "id": "text",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "117",
+          "name": "logo_url",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "118",
+          "name": "pk_insurance_providers_id",
+          "fieldIds": [
+            "114"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 900,
+      "y": 600,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "119",
+      "name": "company_ratios",
+      "schema": "",
+      "order": 6,
+      "fields": [
+        {
+          "id": "120",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "121",
+          "name": "company_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "122",
+          "name": "as_of_date",
+          "type": {
+            "name": "date",
+            "id": "date",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "123",
+          "name": "ratio_key",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "124",
+          "name": "ratio_value",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "125",
+          "name": "ratio_period",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "126",
+          "name": "pk_company_ratios_id",
+          "fieldIds": [
+            "120"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "127",
+          "name": "idx_company_ratios_company_id_as_of_date_ratio_key_ratio_period",
+          "fieldIds": [
+            "121",
+            "122",
+            "123",
+            "125"
+          ],
+          "unique": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 600,
+      "y": 300,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "128",
+      "name": "mutual_fund_nav_history",
+      "schema": "",
+      "order": 9,
+      "fields": [
+        {
+          "id": "129",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "130",
+          "name": "fund_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "131",
+          "name": "nav_date",
+          "type": {
+            "name": "date",
+            "id": "date",
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "132",
+          "name": "nav_price",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "133",
+          "name": "pk_mutual_fund_nav_history_id",
+          "fieldIds": [
+            "129"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "134",
+          "name": "idx_mutual_fund_nav_history_fund_id_nav_date",
+          "fieldIds": [
+            "130",
+            "131"
+          ],
+          "unique": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 300,
+      "y": 600,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "135",
+      "name": "financial_report_line_items",
+      "schema": "",
+      "order": 5,
+      "fields": [
+        {
+          "id": "136",
+          "name": "id",
+          "type": {
+            "name": "bigserial",
+            "id": "bigserial"
+          },
+          "nullable": true,
+          "primaryKey": true,
+          "unique": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "137",
+          "name": "report_id",
+          "type": {
+            "name": "bigint",
+            "id": "bigint",
+            "usageLevel": 2
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "138",
+          "name": "item_key",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "139",
+          "name": "item_label",
+          "type": {
+            "name": "varchar",
+            "id": "varchar",
+            "fieldAttributes": {
+              "hasCharMaxLength": true
+            },
+            "usageLevel": 1
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "140",
+          "name": "item_value",
+          "type": {
+            "name": "decimal",
+            "id": "decimal",
+            "usageLevel": 2,
+            "fieldAttributes": {
+              "precision": {
+                "max": 131072,
+                "min": 0,
+                "default": 10
+              },
+              "scale": {
+                "max": 16383,
+                "min": 0,
+                "default": 2
+              }
+            }
+          },
+          "nullable": true,
+          "primaryKey": false,
+          "unique": false,
+          "createdAt": 1761166593102
+        }
+      ],
+      "indexes": [
+        {
+          "id": "141",
+          "name": "pk_financial_report_line_items_id",
+          "fieldIds": [
+            "136"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1761166593102
+        },
+        {
+          "id": "142",
+          "name": "idx_financial_report_line_items_report_id_item_key",
+          "fieldIds": [
+            "137",
+            "138"
+          ],
+          "unique": true,
+          "createdAt": 1761166593102
+        }
+      ],
+      "x": 300,
+      "y": 300,
+      "color": "#8eb7ff",
+      "isView": false,
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "143",
+      "name": "companies_id_company_announcements_company_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "10",
+      "targetTableId": "97",
+      "sourceFieldId": "11",
+      "targetFieldId": "99",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "144",
+      "name": "companies_id_company_ratios_company_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "10",
+      "targetTableId": "119",
+      "sourceFieldId": "11",
+      "targetFieldId": "121",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "145",
+      "name": "companies_id_daily_stock_data_company_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "10",
+      "targetTableId": "38",
+      "sourceFieldId": "11",
+      "targetFieldId": "40",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "146",
+      "name": "companies_id_financial_reports_company_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "10",
+      "targetTableId": "67",
+      "sourceFieldId": "11",
+      "targetFieldId": "69",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "147",
+      "name": "companies_id_mutual_fund_holdings_company_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "10",
+      "targetTableId": "29",
+      "sourceFieldId": "11",
+      "targetFieldId": "32",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "148",
+      "name": "companies_id_user_portfolio_holdings_company_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "10",
+      "targetTableId": "1",
+      "sourceFieldId": "11",
+      "targetFieldId": "4",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "149",
+      "name": "companies_id_user_watchlists_company_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "10",
+      "targetTableId": "22",
+      "sourceFieldId": "11",
+      "targetFieldId": "24",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593103,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "150",
+      "name": "financial_reports_id_financial_report_line_items_report_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "67",
+      "targetTableId": "135",
+      "sourceFieldId": "68",
+      "targetFieldId": "137",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "151",
+      "name": "fund_providers_id_mutual_funds_provider_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "60",
+      "targetTableId": "87",
+      "sourceFieldId": "61",
+      "targetFieldId": "91",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "152",
+      "name": "insurance_providers_id_insurance_policies_provider_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "113",
+      "targetTableId": "51",
+      "sourceFieldId": "114",
+      "targetFieldId": "53",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "153",
+      "name": "mutual_funds_id_mutual_fund_holdings_fund_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "87",
+      "targetTableId": "29",
+      "sourceFieldId": "88",
+      "targetFieldId": "31",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "154",
+      "name": "mutual_funds_id_mutual_fund_nav_history_fund_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "87",
+      "targetTableId": "128",
+      "sourceFieldId": "88",
+      "targetFieldId": "130",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "155",
+      "name": "mutual_funds_id_user_portfolio_holdings_mutual_fund_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "87",
+      "targetTableId": "1",
+      "sourceFieldId": "88",
+      "targetFieldId": "5",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "156",
+      "name": "mutual_funds_id_user_watchlists_mutual_fund_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "87",
+      "targetTableId": "22",
+      "sourceFieldId": "88",
+      "targetFieldId": "25",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593103,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "157",
+      "name": "sectors_id_companies_sector_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "81",
+      "targetTableId": "10",
+      "sourceFieldId": "82",
+      "targetFieldId": "15",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "158",
+      "name": "sectors_id_insurance_policies_sector_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "81",
+      "targetTableId": "51",
+      "sourceFieldId": "82",
+      "targetFieldId": "55",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "159",
+      "name": "sectors_id_mutual_funds_sector_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "81",
+      "targetTableId": "87",
+      "sourceFieldId": "82",
+      "targetFieldId": "92",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "160",
+      "name": "sectors_id_sectors_parent_sector_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "81",
+      "targetTableId": "81",
+      "sourceFieldId": "82",
+      "targetFieldId": "85",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "161",
+      "name": "user_portfolios_id_user_portfolio_holdings_portfolio_id",
+      "sourceSchema": "",
+      "targetSchema": "",
+      "sourceTableId": "106",
+      "targetTableId": "1",
+      "sourceFieldId": "107",
+      "targetFieldId": "3",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1761166593102,
+      "diagramId": "pt3e0fyfs2lr"
+    }
+  ],
+  "dependencies": [],
+  "areas": [],
+  "customTypes": [
+    {
+      "id": "162",
+      "schema": "",
+      "name": "report_period",
+      "kind": "enum",
+      "values": [
+        "Quarterly",
+        "Annual"
+      ],
+      "order": 0,
+      "diagramId": "pt3e0fyfs2lr"
+    },
+    {
+      "id": "163",
+      "schema": "",
+      "name": "report_type",
+      "kind": "enum",
+      "values": [
+        "Income_Statement",
+        "Balance_Sheet",
+        "Cash_Flow_Statement"
+      ],
+      "order": 0,
+      "diagramId": "pt3e0fyfs2lr"
+    }
+  ]
+}
