@@ -300,18 +300,23 @@ Data Flow Diagrams illustrate how data moves through the Finasaan system, showin
 
 State transition diagrams model the behavior of objects as they respond to events and change states over time.
 
-\subsection{User Knowledge Profile State Machine}
+\subsection{Data Ingestion & AI Enrichment State Machine}
 
-\textbf{[PLACEHOLDER IMAGE: User Knowledge Profile State Diagram]}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/data_ingestion_state_machine.png}
+    \caption{Data Ingestion and AI Enrichment State Machine.}
+    \label{fig:data-ingestion-ai-enrichment-state-machine}
+\end{figure}
 
-\textit{Image Description: A UML 2.5 behavioral state machine diagram showing user knowledge progression. States: Initial (filled circle) → Registration Complete → Beginner (entry: assessLevel) → Intermediate (trigger: conceptMastery > 60\%) → Advanced (trigger: conceptMastery > 85\%) → Final (bullseye circle). Self-transitions: Beginner state with trigger "chatInteraction" → updateMasteryScore; Intermediate state with trigger "moduleCompletion" → incrementProgress, awardBadge. Transitions include guard conditions in brackets [condition] and actions after slash /action. Alternative path: any state on error condition → Error State → resetProfile → Beginner. Include note boxes explaining mastery scoring. Use colors: light blue for beginner, green for intermediate, dark blue for advanced.}
+\subsection{User Research Session State Machine}
 
-\subsection{Portfolio Transaction State Machine}
-
-\textbf{[PLACEHOLDER IMAGE: Transaction State Diagram]}
-
-\textit{Image Description: A UML 2.5 state machine for investment transaction lifecycle. States: Initial → Initiated (entry: lockPrice) → Pending Validation (do: validateFunds) → Validated → Processing Payment → fork into parallel states: Confirming Exchange || Updating Portfolio || Generating Receipt → join → Completed → Final. Error paths: Pending Validation on validation failure → Failed Validation → Cancelled. Processing Payment on payment failure → Payment Failed → Refund Initiated → Refunded → Final. Include timeout transitions: Pending Validation after 10 min → Timeout → Cancelled. Transitions labeled with events and guards [conditions]. Color-code states: yellow initial, orange processing, green success, red errors.}
-
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/user_research_session_state_machine.png}
+    \caption{User Research Session State Machine.}
+    \label{fig:user-research-session-state-machine}
+\end{figure}
 % Chapter 5: Data Design
 \chapter{Data Design}
 

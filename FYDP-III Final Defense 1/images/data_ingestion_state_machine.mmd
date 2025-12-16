@@ -1,0 +1,56 @@
+stateDiagram-v2
+    %% Styling (No 'shape' attributes, only colors)
+    classDef ingest fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef ai fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
+    classDef store fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px;
+
+    [*] --> RawIngestion : Scraper Triggered
+
+    state RawIngestion {
+        [*] --> Fetching
+        Fetching --> Validation : /schemaCheck
+    }
+
+    RawIngestion --> AI_Enrichment : Schema Valid
+    RawIngestion --> Discarded : Malformed Data
+
+    state AI_Enrichment {
+        [*] --> Summarizing
+        %% Note attached after the node is defined
+        note right of Summarizing : Uses Groq to extract tags
+        Summarizing --> Tagging : /extractKeywords
+        Tagging --> SentimentAnalysis : /calcSentiment
+    }
+
+    AI_Enrichment --> QualityCheck : Analysis Complete
+
+    state QualityCheck {
+        [*] --> ConfidenceScore
+    }
+
+    QualityCheck --> Persisting : Confidence High
+    QualityCheck --> ManualReview : Confidence Low
+
+    state Persisting {
+        [*] --> WriteToDB
+        WriteToDB --> GenerateEmbeddings : /createVector
+        GenerateEmbeddings --> Indexing : Update pgvector
+    }
+
+    Persisting --> AvailableForRAG : Success
+    
+    %% Error Paths
+    AI_Enrichment --> ProcessingError : API Timeout
+    ProcessingError --> AI_Enrichment : Retry
+    ProcessingError --> FailedLog : Retry Limit Exceeded
+
+    AvailableForRAG --> [*]
+    Discarded --> [*]
+    FailedLog --> [*]
+
+    %% Apply Classes
+    class RawIngestion ingest
+    class AI_Enrichment ai
+    class Persisting,AvailableForRAG store
+    class Discarded,ProcessingError,FailedLog,ManualReview error
