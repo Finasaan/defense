@@ -143,19 +143,19 @@ The system leverages Next.js for frontend, Hono.js for backend, PostgreSQL for s
 % Chapter 2: Design Methodology
 \chapter{Design Methodology and Software Process Model}
 
-Finasaan employs an \textbf{Object-Oriented Design (OOD)} methodology combined with the \textbf{Agile Development process model}, specifically using Scrum framework with two-week sprints.
+Finasaan employs a \textbf{Procedural Design} methodology combined with the \textbf{Agile Development process model}, specifically using Scrum framework with two-week sprints.
 
 \section{Design Methodology Justification}
-The Object-Oriented approach is chosen for several reasons:
+The Procedural approach is chosen for several reasons:
 
 \begin{itemize}
-    \item \textbf{Modularity:} Financial modules (PSX, Insurance, Mutual Funds, Taxation) are encapsulated as separate classes with well-defined interfaces
-    \item \textbf{Reusability:} Common financial entities (User, Investment, Transaction) serve as base classes for specialized implementations
-    \item \textbf{Maintainability:} Clear separation of concerns allows independent development and testing of modules
-    \item \textbf{Extensibility:} New financial products and features can be added through inheritance without modifying existing code
+    \item \textbf{Modularity:} Financial modules (PSX, Insurance, Mutual Funds, Taxation) are organized as separate functions and procedures with well-defined interfaces
+    \item \textbf{Simplicity:} Straightforward function-based design reduces complexity and improves code readability for the development team
+    \item \textbf{Maintainability:} Procedural decomposition enables clear understanding of data flow and control flow through the system
+    \item \textbf{Extensibility:} New financial products and features can be added through modular function composition without restructuring existing code
 \end{itemize}
 
-Key design patterns employed include Repository (data access abstraction), Factory (calculator instantiation), Observer (real-time data updates), and Strategy (adaptive AI responses).
+Key design principles employed include procedural decomposition (breaking complex tasks into smaller functions), data abstraction (separating data structures from their operations), and modular organization (grouping related functions into logical modules).
 
 \section{Software Process Model Justification}
 The Agile/Scrum model is selected because:
