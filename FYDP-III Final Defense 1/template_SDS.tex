@@ -1,0 +1,588 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+
+% Page setup
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{\leftmark}
+
+% Title formatting
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries Project Title\par}
+    \vspace{1cm}
+    {\Large\itshape By\par}
+    \vspace{1cm}
+    
+    {\large
+    Student Name 1 \hspace{2cm} Student ID\\
+    Student Name 2 \hspace{2cm} Student ID\\
+    }
+    \vspace{2cm}
+    
+    {\large
+    \textbf{Supervisor:}\\
+    Supervisor Name\\
+    \vspace{0.5cm}
+    \textbf{Co-Supervisor (if any):}\\
+    Co-Supervisor Name\\
+    }
+    \vfill
+    
+    {\large
+    \textbf{Bachelor of Science in Computer Science (20xx-20xx)}\\
+    \vspace{0.5cm}
+    Department of Computing\\
+    School of Electrical Engineering and Computer Science\\
+    National University of Sciences \& Technology\\
+    }
+    \vspace{1cm}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\listoftables
+\listoffigures
+
+% Revision History
+\chapter*{Revision History}
+\addcontentsline{toc}{chapter}{Revision History}
+
+\begin{longtable}{|p{3cm}|p{3cm}|p{5cm}|p{2cm}|}
+\hline
+\textbf{Name} & \textbf{Date} & \textbf{Reason for changes} & \textbf{Version} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Name} & \textbf{Date} & \textbf{Reason for changes} & \textbf{Version} \\
+\hline
+\endhead
+ & & & \\
+\hline
+ & & & \\
+\hline
+\end{longtable}
+
+% Application Evaluation History
+\chapter*{Application Evaluation History}
+\addcontentsline{toc}{chapter}{Application Evaluation History}
+
+\begin{longtable}{|p{7cm}|p{7cm}|}
+\hline
+\textbf{Comments (by committee)} & \textbf{Action Taken} \\
+\textbf{*include the ones given at scope time both in doc and presentation} & \\
+\hline
+\endfirsthead
+\hline
+\textbf{Comments (by committee)} & \textbf{Action Taken} \\
+\hline
+\endhead
+ & \\
+\hline
+ & \\
+\hline
+\end{longtable}
+
+\vspace{1cm}
+\noindent\textbf{Supervised by}\\
+\textbf{Supervisor's Name}\\
+Signature\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+% Chapter 1: Introduction
+\chapter{Introduction}
+
+Briefly explain scope of the project covered till now including modules.
+
+% Chapter 2: Design Methodology
+\chapter{Design Methodology and Software Process Model}
+
+Explain and justify the choice of design methodology being followed (OOP or Procedural). Also explain which process model you are following and why.
+
+% Chapter 3: System Overview
+\chapter{System Overview}
+
+Give a general description of the functionality, context, and design of your project.
+
+Provide any background information if necessary.
+
+\section{Architectural Design}
+
+Develop a modular program structure and explain the relationships between the modules to achieve the complete functionality of the system. This is a high-level overview of how the system's modules collaborate with each other in order to achieve the desired functionality.
+
+Don't go into too much detail about the individual subsystems. The main purpose is to gain a general understanding of how and why the system was decomposed, and how the individual parts work together.
+
+Provide a diagram showing the major subsystems and their connections.
+
+\begin{itemize}
+    \item In initial design stage create Box and Line Diagram for simpler representation of the systems
+    \item After finalizing architecture style/pattern diagram (MVC, Client-Server, Layered, Multi-tiered) create a detailed mapping modules/components to each part of the architecture
+\end{itemize}
+
+\textbf{To view example of box and line diagram and architecture styles, see Appendix A}.
+
+% Chapter 4: Design Models
+\chapter{Design Models}
+
+Create design models as are applicable to your system. Provide detailed descriptions with each of the models that you add. Also ensure visibility of all diagrams.
+
+\textbf{Note: Follow version 2.5 for UML diagrams}
+
+\section*{Design Models for Object Oriented Development Approach}
+
+The applicable models for the project using object-oriented development approach may include:
+
+\begin{itemize}
+    \item Class Diagram
+    \item Sequence Diagram
+    \item State Transition Diagram (for the projects which include event handling and backend processes)
+    \item Activity Diagram
+    \item Data flow diagrams
+\end{itemize}
+
+\section*{Design Models for Procedural Approach}
+
+The applicable models for the project using procedural approach may include:
+
+\begin{itemize}
+    \item Activity Diagram
+    \item Data Flow Diagram (data flow diagram should be extended to 2-3 levels. It should clearly list all processes, their sources/sinks and data stores.)
+    \item State Transition Diagram (for the projects which include event handling and backend processes)
+\end{itemize}
+
+\textbf{To view examples of all above models, see Appendix B}
+
+% Chapter 5: Data Design
+\chapter{Data Design}
+
+Explain how the information domain of your system is transformed into data structures. Describe how the major data or system entities are stored, processed, and organized.
+
+List any databases or data storage items in the form of data representation diagram (ERD, XML schema, JSON schema etc.) with description.
+
+\section{Data Dictionary}
+
+Alphabetically list the system entities or major data along with their types and descriptions. If you provided a functional description, list all the functions and function parameters. If you provided an OO description, list the objects and its attributes, methods and method parameters.
+
+% Chapter 6: User Interface Design
+\chapter{User Interface Design}
+
+Describe the functionality of the system from the user's perspective. Explain how the user will be able to use your system to complete all the expected features and the feedback information that will be displayed for the user.
+
+\section{Screen Images}
+
+Display screenshots showing the interface from the user's perspective. These can be hand-drawn, or you can use an automated drawing tool. Just make them as accurate as possible. (Graph paper works well.)
+
+\section{Screen Objects and Actions}
+
+A discussion of screen objects and actions associated with those objects.
+
+% Appendices
+\appendix
+
+\chapter{Architecture Examples}
+
+\section{Box-and-line diagram}
+
+Box-and-line diagrams are often used to describe the business concepts and processes during the analysis phase of the software development lifecycle. These diagrams come with descriptions of components and connectors, as well as other descriptions that provide common inherent interpretations.
+
+\subsection*{Example:}
+
+Lines in the box-and-line diagrams indicate the relationship among components:
+
+\begin{itemize}
+    \item The semantic of lines may refer dependency, control flow, data flow, etc
+    \item Lines may be associated with arrows to indicate the process direction and sequence.
+    \item A box-and-line diagram can be used as a business concept diagram describing its application domain and process concepts
+\end{itemize}
+
+\section{Example of Architecture Pattern}
+
+The figure shows an example of the logical package organization of the layered architecture. The top level deals with user interface, the next level is for utilities, and the one below utility provides core services. Each layer gets support from its lower adjacent layer by an interface implementation and from the related classes in the same layer.
+
+A simple software system may consist of two layers: an interaction layer and a processing layer:
+
+\begin{itemize}
+    \item The interaction layer provides user interfaces to clients, takes requests, validates and forwards requests to the processing layer for processing, and responds to clients.
+    \item The processing layer receives the forwarded requests and performs the business logic process, accesses the database, returns the results to its upper layer, and lets the upper layer respond to clients since the upper layer has the GUI interface responsibility.
+\end{itemize}
+
+\textbf{Note:} The Architecture pattern shall be selected according to the targeted system's requirements and quality attributes. Above example is provided to demonstrate that how the system architecture is required to be presented.
+
+\chapter{Design Models}
+
+\section{Activity Diagram}
+
+The following activity diagram is for an appointment system presenting a ``make an appointment'' process in which all diagram's elements are presented. Furthermore, Table B-1 presents the details of the syntax of an activity diagram.
+
+\subsection*{Activity Diagram Syntax}
+
+\begin{longtable}{|p{8cm}|p{4cm}|}
+\caption{Activity Diagram Syntax} \label{tab:activity} \\
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endhead
+
+\textbf{An action:} \newline
+\begin{itemize}
+    \item Is a simple, non-decomposable piece of behavior.
+    \item Is labeled by its name.
+\end{itemize} & [Action Symbol] \\
+\hline
+
+\textbf{An activity:} \newline
+\begin{itemize}
+    \item Is used to represent a set of actions.
+    \item Is labeled by its name.
+\end{itemize} & [Activity Symbol] \\
+\hline
+
+\textbf{An object node:} \newline
+\begin{itemize}
+    \item Is used to represent an object that is connected to a set of object flows.
+    \item Is labeled by its class name.
+\end{itemize} & [Object Node Symbol] \\
+\hline
+
+\textbf{A control flow:} \newline
+\begin{itemize}
+    \item Shows the sequence of execution.
+\end{itemize} & [Control Flow Symbol] \\
+\hline
+
+\textbf{An object flow:} \newline
+\begin{itemize}
+    \item Shows the flow of an object from one activity (or action) to another activity (or action).
+\end{itemize} & [Object Flow Symbol] \\
+\hline
+
+\textbf{An initial node:} \newline
+\begin{itemize}
+    \item Portrays the beginning of a set of actions or activities.
+\end{itemize} & [Initial Node Symbol] \\
+\hline
+
+\textbf{A final-activity node:} \newline
+\begin{itemize}
+    \item Is used to stop all control flows and object flows in an activity (or action).
+\end{itemize} & [Final Activity Symbol] \\
+\hline
+
+\textbf{A final-flow node:} \newline
+\begin{itemize}
+    \item Is used to stop a specific control flow or object flow.
+\end{itemize} & [Final Flow Symbol] \\
+\hline
+
+\textbf{A decision node:} \newline
+\begin{itemize}
+    \item Is used to represent a test condition to ensure that the control flow or object flow only goes down one path.
+    \item Is labeled with the decision criteria to continue down the specific path.
+\end{itemize} & [Decision Symbol] \\
+\hline
+
+\textbf{A merge node:} \newline
+\begin{itemize}
+    \item Is used to bring back together different decision paths that were created using a decision node.
+\end{itemize} & [Merge Symbol] \\
+\hline
+
+\textbf{A fork node:} \newline
+\begin{itemize}
+    \item Is used to split behavior into a set of parallel or concurrent flows of activities (or action)
+\end{itemize} & [Fork Symbol] \\
+\hline
+
+\textbf{A join node:} \newline
+\begin{itemize}
+    \item Is used to bring back together a set of parallel or concurrent flows of activities (or action)
+\end{itemize} & [Join Symbol] \\
+\hline
+
+\textbf{A swimlane:} \newline
+\begin{itemize}
+    \item Is used to break up an activity diagram into rows and columns to assign the individual activities (or actions) to the individuals or objects that are responsible for executing the activity (or action)
+    \item Is labeled with the name of the individual or object responsible
+\end{itemize} & [Swimlane Symbol] \\
+\hline
+
+\end{longtable}
+
+\section{Class Diagram}
+
+Following class diagram is of an appointment system in which all class diagram elements are presented. Table B-2 presents the syntax of the class diagram as a guideline.
+
+\subsection*{Class Diagram Syntax}
+
+\begin{longtable}{|p{8cm}|p{4cm}|}
+\caption{Class Diagram Syntax} \label{tab:class} \\
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endhead
+
+\textbf{A class:} \newline
+\begin{itemize}
+    \item Has a name typed in bold and centered in its top compartment.
+    \item Has a list of attributes in its middle compartment.
+    \item Represents a kind of person, place, or thing about which the system will need to capture and store information.
+    \item Has a list of operations in its bottom compartment.
+    \item Does not explicitly show operations that are available to all classes.
+\end{itemize} & [Class Symbol] \\
+\hline
+
+\textbf{An attribute:} \newline
+\begin{itemize}
+    \item Represents properties that describe the state of an object.
+    \item Can be derived from other attributes, shown by placing a slash before the attribute's name.
+\end{itemize} & attribute name \newline /derived attribute name \\
+\hline
+
+\textbf{An operation:} \newline
+\begin{itemize}
+    \item Represents the actions or functions that a class can perform.
+    \item Can be classified as a constructor, query, or update operation.
+    \item Includes parentheses that may contain parameters or information needed to perform the operation.
+\end{itemize} & operation name () \\
+\hline
+
+\textbf{An association:} \newline
+\begin{itemize}
+    \item Represents a relationship between multiple classes or a class and itself.
+    \item Is labeled using a verb phrase or a role name, whichever better represents the relationship.
+    \item Can exist between one or more classes.
+    \item Contains multiplicity symbols, which represent the minimum and maximum times a class instance can be associated with the related class instance.
+\end{itemize} & [Association Symbol] \\
+\hline
+
+\textbf{A generalization:} \newline
+\begin{itemize}
+    \item Represents a-kind-of relationship between multiple classes.
+\end{itemize} & [Generalization Symbol] \\
+\hline
+
+\textbf{An aggregation:} \newline
+\begin{itemize}
+    \item Represents a logical a-part-of relationship between multiple classes or a class and itself.
+    \item Is a special form of an association.
+\end{itemize} & [Aggregation Symbol] \\
+\hline
+
+\textbf{A composition:} \newline
+\begin{itemize}
+    \item Represents a physical a-part-of relationship between multiple classes or a class and itself
+    \item Is a special form of an association.
+\end{itemize} & [Composition Symbol] \\
+\hline
+
+\end{longtable}
+
+\section{Sequence Diagram}
+
+Following example shows an instance sequence diagram that depicts the objects and messages for the Make Old Patient Appt use case, which describes the process by which an existing patient creates a new appointment or cancels or reschedules an appointment. Table B-3 provides the detail of sequence diagram syntax.
+
+\subsection*{Sequence diagram Syntax}
+
+\begin{longtable}{|p{8cm}|p{4cm}|}
+\caption{Sequence Diagram Syntax} \label{tab:sequence} \\
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endhead
+
+\textbf{An actor:} \newline
+\begin{itemize}
+    \item Is a person or system that derives benefit from and is external to the system.
+    \item Participates in a sequence by sending and/or receiving messages.
+    \item Is placed across the top of the diagram.
+    \item Is depicted either as a stick figure (default) or, if a nonhuman actor is involved, as a rectangle with <<actor>> in it (alternative).
+\end{itemize} & [Actor Symbol] \\
+\hline
+
+\textbf{An object:} \newline
+\begin{itemize}
+    \item Participates in a sequence by sending and/or receiving messages.
+    \item Is placed across the top of the diagram.
+\end{itemize} & [Object Symbol] \\
+\hline
+
+\textbf{A lifeline:} \newline
+\begin{itemize}
+    \item Denotes the life of an object during a sequence.
+    \item Contains an X at the point at which the class no longer interacts.
+\end{itemize} & [Lifeline Symbol] \\
+\hline
+
+\textbf{An execution occurrence:} \newline
+\begin{itemize}
+    \item Is a long narrow rectangle placed atop a lifeline.
+    \item Denotes when an object is sending or receiving messages.
+\end{itemize} & [Execution Symbol] \\
+\hline
+
+\textbf{A message:} \newline
+\begin{itemize}
+    \item Conveys information from one object to another one.
+    \item An operation call is labeled with the message being sent and a solid arrow, whereas a return is labeled with the value being returned and shown as a dashed arrow.
+\end{itemize} & [Message Symbol] \\
+\hline
+
+\textbf{A guard condition:} \newline
+\begin{itemize}
+    \item Represents a test that must be met for the message to be sent.
+\end{itemize} & [Guard Symbol] \\
+\hline
+
+\textbf{For object destruction:} \newline
+\begin{itemize}
+    \item An X is placed at the end of an object's lifeline to show that it is going out of existence.
+\end{itemize} & [Destruction Symbol] \\
+\hline
+
+\textbf{A frame:} \newline
+\begin{itemize}
+    \item Indicates the context of the sequence diagram.
+\end{itemize} & [Frame Symbol] \\
+\hline
+
+\end{longtable}
+
+\section{Behavioral State Machine Diagram}
+
+Following example of a behavioral state machine representing the patient class in the context of a hospital environment. From this diagram, we can tell that a patient enters a hospital and is admitted after checking in. If a doctor finds the patient to be healthy, he or she is released and is no longer considered a patient after two weeks elapse. If a patient is found to be unhealthy, he or she remains under observation until the diagnosis changes.
+
+\subsection*{Behavioral State Machine Diagram Syntax}
+
+\begin{longtable}{|p{8cm}|p{4cm}|}
+\caption{Behavioral State Machine Diagram Syntax} \label{tab:state} \\
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Term and definition} & \textbf{Symbol} \\
+\hline
+\endhead
+
+\textbf{A state:} \newline
+\begin{itemize}
+    \item Is shown as a rectangle with rounded corners.
+    \item Has a name that represents the state of an object.
+\end{itemize} & [State Symbol] \\
+\hline
+
+\textbf{An initial state:} \newline
+\begin{itemize}
+    \item Is shown as a small, filled-in circle.
+    \item Represents the point at which an object begins to exist.
+\end{itemize} & [Initial Symbol] \\
+\hline
+
+\textbf{A final state:} \newline
+\begin{itemize}
+    \item Is shown as a circle surrounding a small, filled-in circle (bull's-eye).
+    \item Represents the completion of activity.
+\end{itemize} & [Final Symbol] \\
+\hline
+
+\textbf{An event:} \newline
+\begin{itemize}
+    \item Is a noteworthy occurrence that triggers a change in state.
+    \item Can be a designated condition becoming true, the receipt of an explicit signal from one object to another, or the passage of a designated period of time.
+    \item Is used to label a transition.
+\end{itemize} & [Event Symbol] \\
+\hline
+
+\textbf{A transition:} \newline
+\begin{itemize}
+    \item Indicates that an object in the first state will enter the second state.
+    \item Is triggered by the occurrence of the event labeling the transition.
+    \item Is shown as a solid arrow from one state to another, labeled by the event name.
+\end{itemize} & [Transition Symbol] \\
+\hline
+
+\textbf{A frame:} \newline
+\begin{itemize}
+    \item Indicates the context of the behavioral state machine.
+\end{itemize} & [Frame Symbol] \\
+\hline
+
+\end{longtable}
+
+\section{Data Flow Diagram}
+
+Data flow diagram symbols include:
+\begin{itemize}
+    \item External entities
+    \item Processes
+    \item Data flows
+    \item Data stores
+\end{itemize}
+
+\subsection*{Guidelines for Drawing DFDs}
+
+\textbf{Step 1: Draw a Context Diagram:} The first step in constructing a set of DFDs is to draw a context diagram. A \textbf{context diagram} is a top-level view of an information system that shows the system's boundaries and scope. Data stores are not shown in the context diagram because they are contained within the system and remain hidden until more detailed diagrams are created.
+
+\textbf{Step 2: Draw a Diagram 0 DFD:} To show the detail inside the black box, you create DFD diagram 0. \textbf{Diagram 0} zooms in on the system and shows major internal processes, data flows, and data stores. Diagram 0 also repeats the entities and data flows that appear in the context diagram. When you expand the context diagram into DFD diagram 0, you must retain all the connections that flow into and out of process 0.
+
+\textbf{Step 3: Draw the Lower-Level Diagrams:} To create lower-level diagrams, you must use leveling and balancing techniques. \textbf{Leveling} is the process of drawing a series of increasingly detailed diagrams, until all functional primitives are identified.
+
+\textbf{Balancing} maintains consistency among a set of DFDs by ensuring that input and output data flows align properly.
+
+\chapter{Adding Captions and Lists}
+
+\section{Adding Captions and generating Lists of Figures}
+
+For detailed instructions on adding captions in your document management system, refer to the appropriate documentation.
+
+Use the following LaTeX commands for figures and tables:
+\begin{verbatim}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{filename}
+    \caption{Your caption here}
+    \label{fig:yourlabel}
+\end{figure}
+\end{verbatim}
+
+\end{document}

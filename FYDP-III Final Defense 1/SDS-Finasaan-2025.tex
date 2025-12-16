@@ -1,0 +1,1024 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+% Page setup
+\geometry{margin=1in}
+\setlength{\headheight}{14.5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{\leftmark}
+
+% Title formatting
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries Software Design Specification (SDS)\par}
+    \vspace{0.5cm}
+    {\Huge\bfseries Finasaan: An AI-Powered Adaptive Financial Literacy Platform for Pakistan\par}
+    \vspace{1cm}
+    {\Large\itshape By\par}
+    \vspace{1cm}
+    
+    {\large
+    Muhammad Muzamil Kaleem \hspace{2cm} mkaleem.bscs22seecs@seecs.edu.pk\\
+    Muhammad Hadi Khan \hspace{2cm} mhkhan.bscs22seecs@seecs.edu.pk\\
+    Syed Aman Hussain \hspace{2cm} shussain.bscs22seecs@seecs.edu.pk\\
+    }
+    \vspace{2cm}
+    
+    {\large
+    \textbf{Supervisor:}\\
+    {[}Supervisor Name{]}\\
+    \vspace{0.5cm}
+    \textbf{Co-Supervisor (if any):}\\
+    {[}Co-Supervisor Name{]}\\
+    }
+    \vfill
+    
+    {\large
+    \textbf{Bachelor of Science in Computer Science (2022-2026)}\\
+    \vspace{0.5cm}
+    Department of Computing\\
+    School of Electrical Engineering and Computer Science\\
+    National University of Sciences and Technology\\
+    }
+    \vspace{1cm}
+    
+    {\large \today}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\listoftables
+\listoffigures
+
+% Revision History
+\chapter*{Revision History}
+\addcontentsline{toc}{chapter}{Revision History}
+
+\begin{longtable}{|p{3cm}|p{3cm}|p{5cm}|p{2cm}|}
+\hline
+\textbf{Name} & \textbf{Date} & \textbf{Reason for changes} & \textbf{Version} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Name} & \textbf{Date} & \textbf{Reason for changes} & \textbf{Version} \\
+\hline
+\endhead
+Finasaan Team & \today & Initial Draft from SRS Document & 1.0 \\
+\hline
+ & & & \\
+\hline
+\end{longtable}
+
+% Application Evaluation History
+\chapter*{Application Evaluation History}
+\addcontentsline{toc}{chapter}{Application Evaluation History}
+
+\begin{longtable}{|p{7cm}|p{7cm}|}
+\hline
+\textbf{Comments (by committee)} & \textbf{Action Taken} \\
+\textbf{*include the ones given at scope time both in doc and presentation} & \\
+\hline
+\endfirsthead
+\hline
+\textbf{Comments (by committee)} & \textbf{Action Taken} \\
+\hline
+\endhead
+ & \\
+\hline
+ & \\
+\hline
+\end{longtable}
+
+\vspace{1cm}
+\noindent\textbf{Supervised by}\\
+\textbf{[Supervisor Name]}\\
+Signature\hspace{2cm}\rule{5cm}{0.4pt}
+
+% Chapter 1: Introduction
+\chapter{Introduction}
+
+Finasaan is an AI-powered web and mobile platform designed to address Pakistan's financial literacy gap through an adaptive dual-interface approach. The platform integrates six core modules:
+
+\begin{itemize}
+    \item \textbf{Intelligent Chatbot System:} RAG-based conversational AI powered by Gemini and Groq models that adapts to user knowledge levels
+    \item \textbf{Pakistan Stock Exchange (PSX) Integration:} Real-time stock data, company fundamentals, and investment guidance
+    \item \textbf{Insurance Module:} Comparison tools for health, life, and property insurance including Takaful products
+    \item \textbf{Mutual Funds Analysis:} Daily-updated performance tracking with risk assessment and SIP calculators
+    \item \textbf{Taxation Calculator:} Automated tax calculations aligned with FBR policies for salary, property, and business taxes
+    \item \textbf{Budgeting and Planning:} Personal budget creation, expense tracking, and savings goal monitoring
+\end{itemize}
+
+The system leverages Next.js for frontend, Hono.js for backend, PostgreSQL for structured data, Redis for caching, and Pinecone for vector embeddings. Cloudflare provides CDN and security infrastructure.
+
+% Chapter 2: Design Methodology
+\chapter{Design Methodology and Software Process Model}
+
+Finasaan employs an \textbf{Object-Oriented Design (OOD)} methodology combined with the \textbf{Agile Development process model}, specifically using Scrum framework with two-week sprints.
+
+\section{Design Methodology Justification}
+The Object-Oriented approach is chosen for several reasons:
+
+\begin{itemize}
+    \item \textbf{Modularity:} Financial modules (PSX, Insurance, Mutual Funds, Taxation) are encapsulated as separate classes with well-defined interfaces
+    \item \textbf{Reusability:} Common financial entities (User, Investment, Transaction) serve as base classes for specialized implementations
+    \item \textbf{Maintainability:} Clear separation of concerns allows independent development and testing of modules
+    \item \textbf{Extensibility:} New financial products and features can be added through inheritance without modifying existing code
+\end{itemize}
+
+Key design patterns employed include Repository (data access abstraction), Factory (calculator instantiation), Observer (real-time data updates), and Strategy (adaptive AI responses).
+
+\section{Software Process Model Justification}
+The Agile/Scrum model is selected because:
+
+\begin{itemize}
+    \item \textbf{Iterative Development:} AI/ML components require continuous refinement based on testing and user feedback
+    \item \textbf{Flexibility:} Financial regulations and market data APIs evolve, requiring adaptive requirements
+    \item \textbf{Early User Validation:} Dual-interface design necessitates frequent user testing across literacy levels
+    \item \textbf{Risk Management:} Bi-weekly sprints enable early identification of technical challenges in AI model integration
+    \item \textbf{Team Collaboration:} Cross-functional collaboration is essential for full-stack, backend, and UI/UX coordination
+\end{itemize}
+
+% Chapter 3: System Overview
+\chapter{System Overview}
+
+Finasaan is a comprehensive financial education and decision-support platform that addresses Pakistan's financial literacy gap. The system features a dual-interface approach: a simplified beginner mode with guided workflows and AI-powered assistance, and an advanced mode providing comprehensive analytics and real-time data visualization for experienced users.
+
+The platform aggregates financial data from multiple Pakistani sources including PSX (Pakistan Stock Exchange), MUFAP (mutual funds), SECP-registered insurance companies, and FBR (tax authorities). An adaptive learning engine continuously monitors user interactions to adjust content complexity and provide personalized recommendations.
+
+\section{Architectural Design}
+
+Finasaan follows a modern layered architecture optimized for scalability and maintainability. The system architecture comprises four primary layers:
+
+\begin{enumerate}
+    \item \textbf{Presentation Layer:} Next.js-based web application with PWA capabilities using React, TypeScript, and Tailwind CSS for responsive design
+    \item \textbf{Application Layer:} Hono.js backend with RESTful API architecture, organized into modular services:
+    \begin{itemize}
+        \item User Authentication \& Authorization Service (JWT-based with MFA support)
+        \item Financial Data Aggregation Service (scheduled jobs for PSX, MUFAP, insurance data)
+        \item AI/ML Inference Service (RAG orchestration with Gemini/Groq LLMs)
+        \item Notification \& Communication Service (email, push notifications, SMS)
+        \item Analytics \& Reporting Service (user behavior tracking and metrics)
+    \end{itemize}
+    \item \textbf{Data Layer:} Multi-database architecture:
+    \begin{itemize}
+        \item PostgreSQL: User accounts, portfolios, financial data, transactions
+        \item Redis: Session management, caching, rate limiting, real-time data
+        \item Pinecone: Vector embeddings for RAG system knowledge base
+    \end{itemize}
+    \item \textbf{External Integration Layer:} Connectors to PSX API, MUFAP data, insurance providers, FBR tax information, and financial news sources
+\end{enumerate}
+
+\textbf{Box-and-Line Diagram:}
+
+\textbf{[PLACEHOLDER IMAGE: High-Level System Architecture Diagram]}
+
+\textit{Image Description: A box-and-line diagram showing the system's modular structure. At the top, a "Web Browser" box connects to "Next.js Frontend (Presentation Layer)" which connects bidirectionally to "Hono.js API Gateway (Application Layer)" below. The API Gateway connects to five service boxes arranged horizontally: "Auth Service", "Financial Data Service", "AI Service", "Analytics Service", and "Notification Service". Below these services, three database boxes are shown: "PostgreSQL" (left), "Redis Cache" (center), and "Pinecone Vector DB" (right), all connecting to their respective services with arrows. At the bottom, four external entity boxes are shown: "PSX API", "MUFAP Data", "Insurance APIs", and "News Sources", connecting upward to the Financial Data Service. On the sides, show "Cloudflare CDN/WAF" as a protective boundary wrapping the entire system. Use solid lines for direct connections, dashed lines for external integrations, and arrows to indicate data flow direction.}
+
+\textbf{Architecture Pattern:}
+
+The system implements a \textbf{Layered Architecture} pattern combined with service-oriented design:
+
+\begin{itemize}
+    \item \textbf{Presentation Layer:} Handles user interface, client-side routing, and responsive design. Communicates with Application Layer via REST APIs
+    \item \textbf{Application Layer:} Contains business logic organized into loosely-coupled services. Each service has well-defined responsibilities and interfaces
+    \item \textbf{Data Layer:} Provides data persistence and retrieval. Multiple specialized databases optimize for different access patterns (relational, caching, vector similarity)
+    \item \textbf{External Integration Layer:} Abstracts external dependencies behind consistent interfaces, enabling flexibility in data source changes
+\end{itemize}
+
+Each layer communicates only with adjacent layers through defined interfaces, ensuring separation of concerns and maintainability. Cloudflare provides edge caching, DDoS protection, and SSL/TLS management as infrastructure services wrapping the entire architecture.
+
+% Chapter 4: Design Models
+\chapter{Design Models}
+
+This chapter presents comprehensive UML 2.5 design models that describe Finasaan's structure, behavior, and interactions. These models provide detailed specifications for implementation and serve as communication tools among development team members.
+
+\section{Class Diagram}
+
+The class diagram illustrates the static structure of Finasaan, showing the main classes, their attributes, methods, and relationships.
+
+\textbf{[PLACEHOLDER IMAGE: Comprehensive Class Diagram]}
+
+\textit{Image Description: A detailed UML 2.5 class diagram showing the core classes of Finasaan system. Top-left section: User class (attributes: userId:String, email:String, passwordHash:String, name:String, phoneNumber:String, registrationDate:Date, knowledgeLevel:Enum; methods: register(), login(), updateProfile(), getKnowledgeProfile()). Connected via composition to UserKnowledgeProfile class (attributes: profileId:String, userId:String, conceptMasteryMap:Map<String,Float>, learningPace:String, preferredComplexity:String; methods: updateMastery(), assessLevel(), getRecommendations()). Top-right: Investment abstract class with subclasses Stock, MutualFund, Insurance (inheritance relationships shown with hollow triangles). Investment class has attributes: investmentId:String, name:String, currentValue:Decimal, purchaseDate:Date. Stock subclass adds: symbol:String, shares:Integer, sector:String. MutualFund adds: fundType:String, nav:Decimal, expenseRatio:Float. Center: Portfolio class (attributes: portfolioId:String, userId:String, investments:List<Investment>, totalValue:Decimal; methods: addInvestment(), calculateReturns(), getRiskProfile()). Bottom-left: ChatSession class connected to Message class (one-to-many). ChatSession (attributes: sessionId:String, userId:String, startTime:DateTime, context:String[]; methods: sendMessage(), getHistory()). Message (attributes: messageId:String, content:String, timestamp:DateTime, sender:String, responseComplexity:String). Bottom-right: FinancialCalculator interface with implementations TaxCalculator, SIPCalculator, RetirementCalculator (realization relationships shown with dashed arrows). Use proper UML notation: rectangles for classes divided into three compartments (name, attributes, methods), lines for associations with multiplicities (1, *, 0..1), hollow triangles for inheritance, filled diamond for composition, hollow diamond for aggregation. Color coding: blue for user-related classes, green for investment classes, orange for AI/chatbot classes, purple for calculator classes. Include proper visibility markers (+public, -private, \#protected) and data types for all attributes.}
+
+\subsection{Key Classes Description}
+
+\textbf{User Class:}
+\begin{itemize}
+    \item Represents system users with authentication credentials
+    \item Manages user profile information and preferences
+    \item Associates with UserKnowledgeProfile for adaptive learning
+    \item Links to Portfolio and ChatSession for user activities
+\end{itemize}
+
+\textbf{UserKnowledgeProfile Class:}
+\begin{itemize}
+    \item Tracks user's financial literacy progression
+    \item Maintains concept mastery scores across financial topics
+    \item Determines appropriate response complexity for AI interactions
+    \item Provides personalized learning recommendations
+\end{itemize}
+
+\textbf{Investment Hierarchy:}
+\begin{itemize}
+    \item Abstract Investment class defines common investment properties
+    \item Stock, MutualFund, Insurance subclasses implement specific behaviors
+    \item Enables polymorphic handling of diverse investment types
+    \item Supports portfolio diversification tracking
+\end{itemize}
+
+\textbf{Portfolio Class:}
+\begin{itemize}
+    \item Aggregates user's investments across asset classes
+    \item Calculates total portfolio value and returns
+    \item Provides risk assessment based on asset allocation
+    \item Generates performance reports and insights
+\end{itemize}
+
+\textbf{ChatSession and Message Classes:}
+\begin{itemize}
+    \item Manages conversational interactions with AI chatbot
+    \item Maintains context across multiple message exchanges
+    \item Stores response complexity levels for consistency
+    \item Enables conversation history retrieval
+\end{itemize}
+
+\textbf{FinancialCalculator Interface:}
+\begin{itemize}
+    \item Defines common interface for financial computation tools
+    \item Implemented by TaxCalculator, SIPCalculator, RetirementCalculator
+    \item Ensures consistent calculator behavior and extensibility
+    \item Facilitates factory pattern for calculator instantiation
+\end{itemize}
+
+\section{Sequence Diagrams}
+
+Sequence diagrams illustrate the dynamic interactions between objects over time for key use cases.
+
+\subsection{User Registration and Onboarding}
+
+\textbf{[PLACEHOLDER IMAGE: User Registration Sequence Diagram]}
+
+\textit{Image Description: A UML 2.5 sequence diagram showing user registration flow from left to right. Actors/Objects across the top (each with lifeline): User (stick figure), Web Interface (box), API Gateway (box), Authentication Service (box), User Database (cylinder), Email Service (box). Sequence flow: 1) User to Web Interface: Enter registration details, 2) Web Interface to API Gateway: POST /api/v1/auth/register, 3) API Gateway to Authentication Service: validateRegistrationData(), 4) Authentication Service to User Database: checkEmailExists(), User Database returns false, 5) Authentication Service to Authentication Service: hashPassword() (self-call with execution occurrence), 6) Authentication Service to User Database: createUser(userData), User Database returns userId, 7) Authentication Service to Email Service: sendVerificationEmail(userId, email), Email Service returns emailSent, 8) Authentication Service to API Gateway: return success userId message, 9) API Gateway to Web Interface: 200 OK with userId Verification email sent, 10) Web Interface to User: Display success message and prompt to check email. Include activation bars on lifelines during processing, use solid arrows for synchronous calls, dashed arrows for returns. Add frame labeled sd User Registration around entire diagram. Use alt frame for alternative flow showing email already exists error. Include timing annotations showing approximately 500ms total response time.}
+
+\subsection{AI Chatbot Interaction with RAG}
+
+\textbf{[PLACEHOLDER IMAGE: Chatbot RAG Sequence Diagram]}
+
+\textit{Image Description: A comprehensive UML 2.5 sequence diagram illustrating the RAG-powered chatbot interaction. Actors/Objects across top: User, Web Interface, API Gateway, AI Service, User Knowledge Service, Vector Database (Pinecone), LLM Service (Gemini/Groq), Response Processor. Flow: 1) User to Web Interface: Ask question 'What is a mutual fund?', 2) Web Interface to API Gateway: POST /api/v1/chat/message, 3) API Gateway to AI Service: processMessage, 4) AI Service to User Knowledge Service: getUserKnowledgeProfile returns knowledgeProfile, 5) AI Service self-call: generateQueryEmbedding, 6) AI Service to Vector Database: similaritySearch returns relevantDocuments, 7) AI Service self-call: constructPrompt showing prompt assembly, 8) AI Service to LLM Service: generateResponse with long activation bar returns generatedText, 9) AI Service to Response Processor: adaptResponseComplexity returns adaptedResponse, 10) AI Service to User Knowledge Service: updateInteraction, 11) AI Service to API Gateway: return response with confidence and sources, 12) API Gateway to Web Interface: 200 OK with chatResponse, 13) Web Interface to User: Display response with sources. Include opt frames for caching check and error handling. Show parallel processes with par frame for logging and analytics. Use different colored activation bars to show processing intensity (red for LLM inference as slowest). Add notes indicating approximately 2-3 second total response time, with LLM inference taking approximately 1.5 seconds.}
+
+\subsection{Stock Investment Analysis Flow}
+
+\textbf{[PLACEHOLDER IMAGE: Stock Analysis Sequence Diagram]}
+
+\textit{Image Description: UML 2.5 sequence diagram for stock investment analysis. Actors/Objects: User, Web Dashboard, API Gateway, PSX Data Service, Stock Analysis Service, AI Recommendation Engine, Portfolio Service, Database. Flow: 1) User to Web Dashboard: Select stock symbol OGDC, 2) Web Dashboard to API Gateway: GET /api/v1/stocks/OGDC/analysis, 3) API Gateway to PSX Data Service: getStockData(OGDC), PSX Data Service to Database: query stock prices returns historicalPrices, PSX Data Service self-call: calculateTechnicalIndicators computing MA RSI MACD returns stockData, 4) API Gateway to Stock Analysis Service: performFundamentalAnalysis(OGDC), Stock Analysis Service to Database: query company financials returns financials, Stock Analysis Service calculates P/E and dividend yield returns fundamentals, 5) API Gateway to Portfolio Service: getUserHoldings returns currentPosition or null, 6) API Gateway to AI Recommendation Engine: generateRecommendation processes and returns recommendation with action confidence and reasons, 7) API Gateway combines all data, 8) API Gateway to Web Dashboard: 200 OK with stockData fundamentals recommendation currentPosition, 9) Web Dashboard to User: Display comprehensive analysis with charts and AI recommendation. Include loop frame showing for each technical indicator calculation. Use note annotations showing data freshness updated daily at 2 AM. Show async pattern with asynchronous message notation for AI recommendation. Color-code messages: blue for data retrieval, green for calculations, orange for AI processing, purple for display.}
+
+\section{State Transition Diagrams}
+
+State transition diagrams model the behavior of objects as they respond to events and change states over time.
+
+\subsection{User Knowledge Profile State Machine}
+
+\textbf{[PLACEHOLDER IMAGE: User Knowledge Profile State Diagram]}
+
+\textit{Image Description: A UML 2.5 behavioral state machine diagram showing the lifecycle of a user's knowledge profile. States shown as rounded rectangles: Initial State (filled black circle) to New User state to Beginner state to Intermediate state to Advanced state to Final State (bull's-eye circle). New User state has entry action: entry / createEmptyProfile() and activity: do / showOnboardingWizard(). Transitions between states labeled with events and conditions: New User to Beginner: onboardingComplete / assessInitialKnowledge() (guard condition in brackets, action after slash). Beginner to Intermediate: conceptMasteryThreshold masteryScore > 60 percent / updateLearningPath() with annotation showing approximately 2-4 weeks typical duration. Intermediate to Advanced: masteryScore > 85 percent AND completedAdvancedModules / enableAdvancedFeatures(). Include self-transitions showing: Beginner state with interactionWithChatbot / updateMasteryScores(), Intermediate state with completeModule / incrementProgress(), awardBadge(). Add parallel state notation showing concurrent substates within each main state: Content Preference substate (Visual | Textual | Interactive) and Learning Pace substate (Fast | Medium | Slow). Include history state (H in circle) showing return to last substate when re-entering. Show decision point (diamond) for initial assessment: if score<40 percent goto Beginner, if 40-70 percent goto Intermediate, if >70 percent goto Advanced. Use different colors: light blue for beginner states, green for intermediate, dark blue for advanced. Add time annotations showing typical progression times. Include note boxes explaining key transitions and threshold calculations.}
+
+\subsection{Investment Transaction State Machine}
+
+\textbf{[PLACEHOLDER IMAGE: Investment Transaction State Diagram]}
+
+\textit{Image Description: UML 2.5 state machine for investment transaction lifecycle. States: Initial (black dot) to Initiated (user starts transaction) to Pending Validation to Validated to Processing Payment to fork node splits to parallel states: Confirming with Exchange || Updating Portfolio || Generating Receipt to join node to Completed to Final (bull's-eye). Alternative paths from Pending Validation: validation fails to Failed Validation to Cancelled. From Processing Payment: payment fails to Payment Failed to Refund Initiated to Refunded to Final. Initiated state shows: entry / lockAssetPrice(), exit / releaseIfTimeout(), do / displayConfirmationDialog(). Processing Payment has internal substates: Authorizing Card to Charging Account to Confirming Transaction. Transitions labeled with events and guards: Initiated to Pending Validation: userConfirms / validateFunds(), checkMarketHours() showing multiple actions. Include timeout transitions: Pending Validation after 10 minutes to Timed Out to Cancelled. Use composite state for Processing Payment showing nested substates. Add exception transitions with exception/PaymentError to Payment Failed. Show history states for resuming interrupted transactions. Color-code states: yellow for initial stages, orange for processing, green for success paths, red for error paths, gray for cancelled. Include timing constraints as notes: Typical completion: 5-15 seconds, Timeout after: 10 minutes. Add junction pseudostate (filled circle) for decision logic after validation checking multiple conditions (sufficient funds AND market open AND valid instrument). Show entry/exit actions for each state with proper UML notation.}
+
+\section{Activity Diagrams}
+
+Activity diagrams model the workflow and business logic of system processes, showing the flow from activity to activity.
+
+\subsection{Mutual Fund Investment Decision Activity Diagram}
+
+\textbf{[PLACEHOLDER IMAGE: Mutual Fund Investment Activity Diagram]}
+
+\textit{Image Description: A comprehensive UML 2.5 activity diagram with swimlanes showing the mutual fund investment decision process. Four vertical swimlanes from left to right: User, Web Application, AI Recommendation Engine, Financial Data Service. Flow starts with initial node (filled circle) in User lane. User lane: Access Mutual Funds Section action then Specify Investment Criteria (showing inputs: amount, risk tolerance, time horizon). Arrow crosses to Web Application lane: Retrieve Available Funds action then Fetch Fund Performance Data which sends object flow (rectangle) Fund Data to Financial Data Service lane. Financial Data Service lane: fork node splits into three parallel activities: Get NAV History || Calculate Returns || Assess Risk Metrics then join node then sends Comprehensive Fund Analysis object back. Web Application receives data then decision node (diamond) if User wants AI recommendation, if yes then crosses to AI Recommendation Engine lane: Analyze User Profile then Match Funds to Profile then Generate Personalized Recommendations (with note: considers risk tolerance, goals, literacy level). If no from decision node then Display Fund Comparison Table. Both paths merge then User lane: Review Options then decision node if User satisfied with option, if no then loops back to Adjust Criteria (showing iteration). If yes then Select Fund then Enter Investment Amount then decision node if Amount within limits, if no then shows error flow to Display Error Message then loops back. If yes then Web Application: Initiate Transaction then Process Payment then fork into parallel: Update Portfolio || Send Confirmation Email || Log Transaction then join then Display Success Message then activity final node (bull's-eye). Include object nodes showing data flow: Investment Criteria object flowing from user input, Fund Rankings flowing between services, Transaction Receipt as final output. Add notes explaining key decision points: Min investment: PKR 500, Max per fund: PKR 5 million. Use expansion regions showing for each fund in top 10 processing. Include exception handling with activity edge labeled exception/InsufficientFunds then Notify User then merge back to amount entry. Color code swimlanes: light yellow for User, light blue for Web Application, light green for AI Engine, light purple for Data Service. Show time estimates as annotations: Typical completion: 2-3 minutes, AI recommendation: approximately 5 seconds. Include signal sending/receiving actions for email notifications using proper UML notation (convex pentagon shapes).}
+
+\subsection{Daily Data Update Activity Diagram}
+
+\textbf{[PLACEHOLDER IMAGE: Daily Data Update Activity Diagram]}
+
+\textit{Image Description: UML 2.5 activity diagram showing the automated daily financial data update process. Single swimlane representing Automated System with time-triggered start. Flow begins with initial node at 02:00 AM UTC shown as time event annotation. First action Initialize Update Job then fork node splitting into four parallel flows. Flow 1 PSX Data Update: Connect to PSX API then decision if API available, if no Log Error and Send Alert merge to join, if yes Fetch Stock Prices then Validate Data Integrity with note check for missing values and outliers then decision if Data valid, if no error flow, if yes Transform Data Format then Update PostgreSQL stock prices table then join. Flow 2 Mutual Funds Update: Scrape MUFAP Website then Extract NAV Data then Clean and Normalize then Update mutual funds table then join. Flow 3 News Aggregation: expansion region for each news source Fetch Articles then Filter Financial Content then Extract Entities stocks and companies then Store in PostgreSQL financial news table then join. Flow 4 Insurance Data Update: Check Insurance Provider APIs then decision if new products available, if yes Update Product Catalog, if no skip merge then join. After join node Clear Redis Cache then Generate Update Summary Report then decision if errors occurred, if yes Send Alert to Admin, if no Send Success Notification merge then Update Last Run Timestamp then activity final node. Include object nodes Raw API Response flowing between fetch and validate actions, Validated Data flowing to database update, Update Report as final output. Use interruptible activity region around entire process with exception edge labeled after 30 minutes timeout Cancel Job and Alert to final node. Add expansion region showing for each stock symbol in watchlist processing within PSX update. Include decision nodes with proper guard conditions in brackets. Show data store nodes cylinder shapes for PostgreSQL with read write flows, and Redis cache for temporary storage. Use colors light green for successful paths, light red for error paths, light blue for data processing actions. Add notes indicating Processes approximately 500 stocks, Updates approximately 200 mutual funds, Aggregates approximately 50 news articles. Show time estimates Total duration 15-20 minutes, PSX update 5-8 minutes, News aggregation 8-10 minutes. Include merge nodes before join to handle error flows. Show logging as concurrent activity using dashed lines to Logging Service in separate area.}
+
+\section{Data Flow Diagrams}
+
+Data Flow Diagrams illustrate how data moves through the Finasaan system, showing processes, data stores, and external entities.
+
+\subsection{Context Diagram (Level 0)}
+
+\textbf{[PLACEHOLDER IMAGE: Finasaan Context Diagram]}
+
+\textit{Image Description: A DFD context diagram showing the Finasaan system as a single central process (large circle labeled 0. Finasaan Financial Literacy Platform) with external entities and data flows. External entities shown as rectangles: User (top-left, stick figure icon), PSX Data Provider (top-right, building icon), MUFAP (right, document icon), Insurance Companies (bottom-right, insurance icon), FBR Tax Authority (bottom, government building icon), Financial News Sources (bottom-left, newspaper icon), Email Service (left, envelope icon). Data flows shown as labeled arrows: User to Finasaan: Registration Data, Investment Queries, Portfolio Transactions, Learning Interactions; Finasaan to User: Personalized Recommendations, Financial Reports, Educational Content, Market Insights. PSX to Finasaan: Real-time Stock Data, Company Fundamentals; MUFAP to Finasaan: Mutual Fund NAVs, Performance Metrics; Insurance Companies to Finasaan: Product Information, Premium Rates; FBR to Finasaan: Tax Policies, Tax Slabs; News Sources to Finasaan: Financial News Articles, Market Analysis; Finasaan to Email Service: Notification Requests; Email Service to User: Email Notifications (external flow). Style: Use double-lined rectangle for external entities, numbered circle for system process (0), arrows for data flows with clear labels. Color-code data flows: blue for input to system, green for output from system, red for external communications. Add system boundary (dashed rectangle) around central process indicating scope of Finasaan system. Include notation legend in corner explaining symbols. Use clear, readable font for all labels. Show bidirectional flows where appropriate with arrows on both ends.}
+
+\subsection{Level 1 Data Flow Diagram}
+
+\textbf{[PLACEHOLDER IMAGE: Finasaan Level 1 DFD]}
+
+\textit{Image Description: A detailed Level 1 DFD decomposing the Finasaan system into major processes. External entities at diagram edges: User (top-left), PSX (top-right), MUFAP (right), Insurance Providers (bottom-right), FBR (bottom), News Sources (bottom-left), Email Service (left). Central processes (numbered circles): 1.0 User Management receives Registration Data and Login Credentials from User, outputs User Profile to D1 Users datastore and Authentication Token to User. 2.0 Financial Data Aggregation receives stock data from PSX, mutual fund data from MUFAP, insurance data from providers, tax data from FBR, and news from sources; outputs to D2 Financial Data datastore. 3.0 AI Chatbot Service receives User Questions and reads from D1 Users and D2 Financial Data, outputs Personalized Responses to User. 4.0 Investment Analysis receives Investment Queries from User, reads from D2 Financial Data and D3 Portfolio datastore, outputs Analysis Reports to User. 5.0 Portfolio Management receives Transaction Requests from User, updates D3 Portfolio datastore, outputs Confirmation to User. 6.0 Notification Service receives Alerts from other processes, sends Notification Requests to Email Service. Data stores shown as parallel lines: D1 Users (user profiles and knowledge levels), D2 Financial Data (stocks, funds, insurance, news), D3 Portfolio (user investments and transactions), D4 Analytics (usage logs and metrics). Show data flows between all processes and datastores with labeled arrows indicating data type.}
+
+% Chapter 5: Data Design
+\chapter{Data Design}
+
+Finasaan's information domain is transformed into data structures using a multi-database architecture. The system employs PostgreSQL for structured relational data (users, portfolios, financial records), Redis for high-speed caching and session management, and Pinecone for vector embeddings supporting the RAG-based AI system.
+
+Major data entities are organized as follows:
+\begin{itemize}
+    \item \textbf{User Domain:} User accounts, authentication credentials, knowledge profiles, interaction history
+    \item \textbf{Financial Data Domain:} Stocks, mutual funds, insurance products, daily price/NAV data, company fundamentals
+    \item \textbf{Portfolio Domain:} User portfolios, holdings, transactions, watchlists
+    \item \textbf{AI/Chat Domain:} Chat sessions, messages, RAG knowledge base vectors
+    \item \textbf{Content Domain:} Financial news articles, educational content, regulatory updates
+\end{itemize}
+
+\section{Database Schema Overview}
+The following sections present the detailed database schemas for PostgreSQL, followed by the data dictionary.
+
+\section{PostgreSQL Schema}
+
+\subsection{Users Table}
+\begin{verbatim}
+CREATE TABLE users (
+    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20),
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP,
+    knowledge_level VARCHAR(20) DEFAULT 'beginner',
+    is_active BOOLEAN DEFAULT true,
+    email_verified BOOLEAN DEFAULT false
+);
+\end{verbatim}
+
+\subsection{Stocks Table}
+\begin{verbatim}
+CREATE TABLE stocks (
+    stock_id SERIAL PRIMARY KEY,
+    symbol VARCHAR(10) UNIQUE NOT NULL,
+    company_name VARCHAR(255) NOT NULL,
+    sector VARCHAR(100),
+    market_cap DECIMAL(20, 2),
+    pe_ratio DECIMAL(10, 2),
+    dividend_yield DECIMAL(5, 2),
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+\end{verbatim}
+
+\subsection{Stock Prices Table}
+\begin{verbatim}
+CREATE TABLE stock_prices (
+    price_id SERIAL PRIMARY KEY,
+    stock_id INTEGER REFERENCES stocks(stock_id),
+    date DATE NOT NULL,
+    open_price DECIMAL(12, 2),
+    close_price DECIMAL(12, 2),
+    high_price DECIMAL(12, 2),
+    low_price DECIMAL(12, 2),
+    volume BIGINT,
+    UNIQUE(stock_id, date)
+);
+CREATE INDEX idx_stock_prices_date ON stock_prices(date DESC);
+CREATE INDEX idx_stock_prices_stock_id ON stock_prices(stock_id);
+\end{verbatim}
+
+\subsection{Mutual Funds Table}
+\begin{verbatim}
+CREATE TABLE mutual_funds (
+    fund_id SERIAL PRIMARY KEY,
+    fund_name VARCHAR(255) NOT NULL,
+    fund_type VARCHAR(50) NOT NULL,
+    nav DECIMAL(12, 4),
+    aum DECIMAL(20, 2),
+    expense_ratio DECIMAL(5, 2),
+    is_shariah_compliant BOOLEAN DEFAULT false,
+    inception_date DATE,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+\end{verbatim}
+
+\subsection{Portfolios Table}
+\begin{verbatim}
+CREATE TABLE portfolios (
+    portfolio_id SERIAL PRIMARY KEY,
+    user_id UUID REFERENCES users(user_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE portfolio_holdings (
+    holding_id SERIAL PRIMARY KEY,
+    portfolio_id INTEGER REFERENCES portfolios(portfolio_id),
+    asset_type VARCHAR(20) NOT NULL, -- 'stock', 'mutual_fund'
+    asset_id INTEGER NOT NULL,
+    quantity DECIMAL(12, 4),
+    average_purchase_price DECIMAL(12, 2),
+    purchase_date DATE,
+    UNIQUE(portfolio_id, asset_type, asset_id)
+);
+\end{verbatim}
+
+\section{Additional PostgreSQL Tables for User Interaction Data}
+
+\subsection{User Knowledge Profiles}
+\begin{verbatim}
+CREATE TABLE user_knowledge_profiles (
+    profile_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id),
+    concept_mastery_stocks DECIMAL(3, 2) DEFAULT 0.00,
+    concept_mastery_mutual_funds DECIMAL(3, 2) DEFAULT 0.00,
+    concept_mastery_insurance DECIMAL(3, 2) DEFAULT 0.00,
+    concept_mastery_taxation DECIMAL(3, 2) DEFAULT 0.00,
+    concept_mastery_retirement DECIMAL(3, 2) DEFAULT 0.00,
+    learning_pace VARCHAR(20) DEFAULT 'medium',
+    preferred_complexity VARCHAR(20) DEFAULT 'beginner',
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id)
+);
+
+CREATE TABLE user_interaction_history (
+    interaction_id SERIAL PRIMARY KEY,
+    profile_id INTEGER REFERENCES user_knowledge_profiles(profile_id),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    topic VARCHAR(50),
+    questions_asked INTEGER,
+    understood BOOLEAN
+);
+\end{verbatim}
+
+\subsection{Chat Sessions}
+\begin{verbatim}
+CREATE TABLE chat_sessions (
+    session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id INTEGER REFERENCES users(user_id),
+    start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    end_time TIMESTAMP,
+    context TEXT,
+    summary TEXT
+);
+
+CREATE TABLE chat_messages (
+    message_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID REFERENCES chat_sessions(session_id),
+    sender VARCHAR(10) CHECK (sender IN ('user', 'bot')),
+    content TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    response_complexity VARCHAR(20) CHECK (response_complexity IN 
+        ('beginner', 'intermediate', 'advanced')),
+    sources TEXT[]
+);
+\end{verbatim}
+
+\subsection{Financial News}
+\begin{verbatim}
+CREATE TABLE financial_news (
+    news_id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    content TEXT,
+    source VARCHAR(200),
+    published_date TIMESTAMP,
+    scraped_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    url TEXT UNIQUE,
+    sentiment DECIMAL(3, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE news_entities (
+    entity_id SERIAL PRIMARY KEY,
+    news_id INTEGER REFERENCES financial_news(news_id),
+    entity_type VARCHAR(20) CHECK (entity_type IN 
+        ('stock', 'company', 'topic')),
+    entity_value VARCHAR(200),
+    UNIQUE(news_id, entity_type, entity_value)
+);
+
+CREATE INDEX idx_financial_news_date ON financial_news(published_date);
+CREATE INDEX idx_financial_news_source ON financial_news(source);
+CREATE INDEX idx_news_entities_type ON news_entities(entity_type, entity_value);
+\end{verbatim}
+
+\section{Pinecone Vector Database}
+
+\subsection{Knowledge Base Vectors}
+\begin{verbatim}
+{
+    "id": "doc-12345",
+    "values": [0.023, -0.451, 0.782, ...], // 768-dim embedding
+    "metadata": {
+        "documentType": "educational_content",
+        "topic": "mutual_funds",
+        "complexity": "beginner",
+        "title": "Introduction to Mutual Funds",
+        "content": "A mutual fund is...",
+        "language": "en"
+    }
+}
+\end{verbatim}
+
+\section{Data Dictionary}
+
+Alphabetically list the system entities or major data along with their types and descriptions.
+
+\subsection{Major Database Tables}
+
+\textbf{chat\_messages:} Stores individual messages in chat sessions between users and the AI chatbot.
+\begin{itemize}
+    \item message\_id (UUID): Unique identifier for each message
+    \item session\_id (UUID): Reference to chat session
+    \item sender (VARCHAR): Message sender type (user or bot)
+    \item content (TEXT): Message content
+    \item timestamp (TIMESTAMP): Message timestamp
+    \item response\_complexity (VARCHAR): Complexity level of bot response
+    \item sources (TEXT[]): Array of information sources used
+\end{itemize}
+
+\textbf{chat\_sessions:} Maintains chat conversation sessions.
+\begin{itemize}
+    \item session\_id (UUID): Unique session identifier
+    \item user\_id (INTEGER): Reference to users table
+    \item start\_time (TIMESTAMP): Session start time
+    \item end\_time (TIMESTAMP): Session end time
+    \item context (TEXT): Conversation context
+    \item summary (TEXT): Session summary
+\end{itemize}
+
+\textbf{companies:} Stores information about listed companies on PSX.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item symbol (VARCHAR): Stock ticker symbol
+    \item company\_name (VARCHAR): Full company name
+    \item description (TEXT): Company description
+    \item sector\_id (INT): Reference to sectors table
+    \item website\_url (VARCHAR): Company website
+    \item logo\_url (VARCHAR): Company logo URL
+    \item founded\_year (INT): Year company was founded
+    \item ceo\_name (VARCHAR): CEO name
+    \item description\_embedding (VECTOR): Vector embedding for semantic search
+\end{itemize}
+
+\textbf{company\_announcements:} Stores company announcements and news.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item company\_id (BIGINT): Reference to companies table
+    \item headline (VARCHAR): Announcement headline
+    \item body\_text (TEXT): Full announcement text
+    \item source\_url (VARCHAR): Source URL
+    \item publish\_datetime (TIMESTAMPTZ): Publication timestamp
+    \item announcement\_embedding (VECTOR): Vector embedding for search
+\end{itemize}
+
+\textbf{company\_ratios:} Financial ratios for companies.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item company\_id (BIGINT): Reference to companies table
+    \item as\_of\_date (DATE): Calculation date
+    \item ratio\_key (VARCHAR): Ratio identifier (e.g., "P/E", "ROE")
+    \item ratio\_value (DECIMAL): Calculated ratio value
+    \item ratio\_period (VARCHAR): Time period (quarterly, annual, TTM)
+\end{itemize}
+
+\textbf{daily\_stock\_data:} Daily trading data for stocks.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item company\_id (BIGINT): Reference to companies table
+    \item trade\_date (DATE): Trading date
+    \item open\_price (DECIMAL): Opening price
+    \item high\_price (DECIMAL): Highest price
+    \item low\_price (DECIMAL): Lowest price
+    \item close\_price (DECIMAL): Closing price
+    \item adjusted\_close\_price (DECIMAL): Adjusted closing price
+    \item volume (BIGINT): Trading volume
+    \item value\_traded (DECIMAL): Total value traded
+\end{itemize}
+
+\textbf{financial\_news:} Financial news articles.
+\begin{itemize}
+    \item news\_id (SERIAL): Primary key
+    \item title (TEXT): Article title
+    \item content (TEXT): Article content
+    \item source (VARCHAR): News source
+    \item published\_date (TIMESTAMP): Publication date
+    \item scraped\_date (TIMESTAMP): Date scraped
+    \item url (TEXT): Article URL
+    \item sentiment (DECIMAL): Sentiment score
+\end{itemize}
+
+\textbf{financial\_report\_line\_items:} Individual line items from financial statements.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item report\_id (BIGINT): Reference to financial\_reports table
+    \item line\_item\_name (VARCHAR): Name of financial metric
+    \item line\_item\_value (DECIMAL): Value of metric
+\end{itemize}
+
+\textbf{financial\_reports:} Corporate financial statements.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item company\_id (BIGINT): Reference to companies table
+    \item report\_type (ENUM): Type (Income Statement, Balance Sheet, Cash Flow)
+    \item period\_type (ENUM): Period (Quarterly, Annual)
+    \item period\_end\_date (DATE): Reporting period end date
+    \item fiscal\_year (INT): Fiscal year
+    \item fiscal\_quarter (INT): Fiscal quarter
+    \item currency (VARCHAR): Currency code
+    \item source\_url (TEXT): Report source URL
+    \item filed\_date (DATE): Filing date
+    \item report\_summary\_embedding (VECTOR): Vector embedding for search
+\end{itemize}
+
+\textbf{fund\_providers:} Mutual fund management companies.
+\begin{itemize}
+    \item id (INT): Primary key
+    \item name (VARCHAR): Provider name
+    \item description (TEXT): Provider description
+    \item logo\_url (VARCHAR): Logo URL
+    \item website\_url (VARCHAR): Website URL
+\end{itemize}
+
+\textbf{insurance\_policies:} Insurance product information.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item provider\_id (INT): Reference to insurance\_providers table
+    \item policy\_name (VARCHAR): Policy name
+    \item sector\_id (INT): Insurance sector
+    \item description (TEXT): Policy description
+    \item key\_features (TEXT): Key features
+    \item policy\_embedding (VECTOR): Vector embedding for search
+\end{itemize}
+
+\textbf{insurance\_providers:} Insurance companies.
+\begin{itemize}
+    \item id (INT): Primary key
+    \item name (VARCHAR): Provider name
+    \item description (TEXT): Provider description
+    \item logo\_url (VARCHAR): Logo URL
+\end{itemize}
+
+\textbf{mutual\_fund\_holdings:} Holdings within mutual funds.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item fund\_id (BIGINT): Reference to mutual\_funds table
+    \item company\_id (BIGINT): Reference to companies table
+    \item as\_of\_date (DATE): Reporting date
+    \item percentage\_of\_fund (DECIMAL): Percentage of fund
+    \item shares\_held (BIGINT): Number of shares held
+\end{itemize}
+
+\textbf{mutual\_fund\_nav\_history:} Net Asset Value history for mutual funds.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item fund\_id (BIGINT): Reference to mutual\_funds table
+    \item nav\_date (DATE): NAV calculation date
+    \item nav\_price (DECIMAL): NAV price
+\end{itemize}
+
+\textbf{mutual\_funds:} Mutual fund information.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item symbol (VARCHAR): Fund symbol
+    \item name (VARCHAR): Fund name
+    \item provider\_id (INT): Reference to fund\_providers table
+    \item sector\_id (INT): Fund category/sector
+    \item description (TEXT): Fund description
+    \item inception\_date (DATE): Fund inception date
+    \item fund\_strategy\_embedding (VECTOR): Vector embedding for search
+\end{itemize}
+
+\textbf{news\_entities:} Entities extracted from news articles.
+\begin{itemize}
+    \item entity\_id (SERIAL): Primary key
+    \item news\_id (INTEGER): Reference to financial\_news table
+    \item entity\_type (VARCHAR): Entity type (stock, company, topic)
+    \item entity\_value (VARCHAR): Entity value
+\end{itemize}
+
+\textbf{sectors:} Industry sectors classification.
+\begin{itemize}
+    \item id (INT): Primary key
+    \item name (VARCHAR): Sector name
+    \item description (TEXT): Sector description
+    \item parent\_sector\_id (INT): Parent sector reference
+\end{itemize}
+
+\textbf{user\_interaction\_history:} User learning interaction records.
+\begin{itemize}
+    \item interaction\_id (SERIAL): Primary key
+    \item profile\_id (INTEGER): Reference to user\_knowledge\_profiles table
+    \item timestamp (TIMESTAMP): Interaction timestamp
+    \item topic (VARCHAR): Topic discussed
+    \item questions\_asked (INTEGER): Number of questions
+    \item understood (BOOLEAN): Comprehension indicator
+\end{itemize}
+
+\textbf{user\_knowledge\_profiles:} User financial literacy profiles.
+\begin{itemize}
+    \item profile\_id (SERIAL): Primary key
+    \item user\_id (INTEGER): Reference to users table
+    \item concept\_mastery\_stocks (DECIMAL): Stocks knowledge level (0-1)
+    \item concept\_mastery\_mutual\_funds (DECIMAL): Mutual funds knowledge level
+    \item concept\_mastery\_insurance (DECIMAL): Insurance knowledge level
+    \item concept\_mastery\_taxation (DECIMAL): Taxation knowledge level
+    \item concept\_mastery\_retirement (DECIMAL): Retirement planning knowledge level
+    \item learning\_pace (VARCHAR): Learning pace (slow, medium, fast)
+    \item preferred\_complexity (VARCHAR): Preferred content complexity
+    \item last\_updated (TIMESTAMP): Last update timestamp
+\end{itemize}
+
+\textbf{user\_portfolio\_holdings:} User investment portfolio holdings.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item portfolio\_id (BIGINT): Reference to user\_portfolios table
+    \item company\_id (BIGINT): Reference to companies table (for stocks)
+    \item mutual\_fund\_id (BIGINT): Reference to mutual\_funds table
+    \item quantity (DECIMAL): Number of units held
+    \item average\_purchase\_price (DECIMAL): Average purchase price
+    \item added\_at (TIMESTAMPTZ): Date added to portfolio
+\end{itemize}
+
+\textbf{user\_portfolios:} User investment portfolios.
+\begin{itemize}
+    \item id (BIGSERIAL): Primary key
+    \item user\_id (BIGINT): Reference to users table
+    \item name (VARCHAR): Portfolio name
+    \item description (TEXT): Portfolio description
+    \item created\_at (TIMESTAMPTZ): Creation timestamp
+\end{itemize}
+
+\textbf{user\_watchlists:} User watchlist for tracking assets.
+\begin{itemize}
+    \item user\_id (BIGINT): Reference to users table
+    \item company\_id (BIGINT): Reference to companies table
+    \item mutual\_fund\_id (BIGINT): Reference to mutual\_funds table
+    \item notes (TEXT): User notes
+    \item added\_at (TIMESTAMPTZ): Date added
+\end{itemize}
+
+\subsection{Vector Database Entities}
+
+\textbf{Pinecone Knowledge Base Vectors:}
+\begin{itemize}
+    \item id (STRING): Unique document identifier
+    \item values (FLOAT ARRAY): 768-dimensional embedding vector
+    \item metadata (JSON): Document metadata including type, topic, complexity, title, content, and language
+\end{itemize}
+
+\subsection{Cache Layer Entities}
+
+\textbf{Redis Cache Keys:}
+\begin{itemize}
+    \item session:[user\_id] - User session data with TTL
+    \item cache:stock:[symbol] - Cached stock data with short TTL
+    \item cache:nav:[fund\_id] - Cached mutual fund NAV data
+    \item queue:data-updates - Background job queue for data processing
+    \item ratelimit:[endpoint]:[user\_id] - API rate limiting counters
+\end{itemize}
+
+% Chapter 6: User Interface Design
+\chapter{User Interface Design}
+
+Finasaan's user interface employs an adaptive dual-interface approach that adjusts to user financial literacy levels. The beginner mode features simplified navigation, guided workflows, persistent AI chatbot assistance, and visual learning aids. The advanced mode provides comprehensive analytics, customizable dashboards, detailed data tables, and direct access to all analytical tools.
+
+The interface maintains consistency across all modules through uniform design patterns and implements progressive disclosure to gradually introduce complexity as users demonstrate understanding. The system is WCAG 2.1 Level AA compliant and fully responsive across desktop (1920x1080+), laptop (1366x768), tablet (768x1024), and mobile (375x667) devices.
+
+\section{Screen Images}
+
+Display screenshots showing the interface from the user's perspective. These screenshots are designed using Figma and represent the actual implementation.
+
+\subsection{Main Dashboard - Beginner Mode}
+\textbf{[PLACEHOLDER IMAGE: Beginner Dashboard Screenshot]}
+
+\textit{Screen Description: The beginner dashboard features a clean, uncluttered layout with large, easily tappable elements. The top navigation bar displays the Finasaan logo, a simple menu icon, and notification bell. The main content area shows:}
+\begin{itemize}
+    \item Welcome message with user's name and current financial literacy level indicator
+    \item Persistent AI chatbot widget in bottom-right corner with a friendly greeting
+    \item Four large, colorful tiles representing main sections: "Learn About Stocks", "Explore Mutual Funds", "Understand Insurance", "Calculate Your Taxes"
+    \item Each tile contains an icon, title, and brief one-sentence description
+    \item Progress bar showing learning journey completion (e.g., "15\% Complete")
+    \item "What would you like to learn today?" search bar with example queries
+\end{itemize}
+
+\subsection{Main Dashboard - Advanced Mode}
+\textbf{[PLACEHOLDER IMAGE: Advanced Dashboard Screenshot]}
+
+\textit{Screen Description: The advanced dashboard maximizes information density while maintaining usability. The interface displays:}
+\begin{itemize}
+    \item Compact top navigation with direct links to all major sections
+    \item Multi-widget layout with customizable arrangement
+    \item Real-time market summary widget showing KSE-100 index, top gainers/losers
+    \item Personal portfolio performance widget with graphs and percentage changes
+    \item Watchlist widget showing tracked stocks and mutual funds with live prices
+    \item News feed widget with latest financial news articles
+    \item AI chatbot minimized to icon in corner but expandable on demand
+    \item Quick action buttons for common tasks (Buy/Sell, Add to Portfolio, etc.)
+\end{itemize}
+
+\subsection{Stock Analysis Screen}
+\textbf{[PLACEHOLDER IMAGE: Stock Analysis Screenshot]}
+
+\textit{Screen Description: Comprehensive stock analysis interface showing:}
+\begin{itemize}
+    \item Company header with logo, name, symbol, and current price prominently displayed
+    \item Interactive price chart with adjustable timeframes (1D, 1W, 1M, 3M, 1Y, 5Y)
+    \item Technical indicators panel (Moving Averages, RSI, MACD) with toggle controls
+    \item Fundamental data section displaying P/E ratio, EPS, dividend yield, market cap
+    \item AI-generated analysis summary card explaining whether to buy, hold, or sell
+    \item Company description and recent announcements section
+    \item "Add to Watchlist" and "Add to Portfolio" action buttons
+\end{itemize}
+
+\subsection{AI Chatbot Interface}
+\textbf{[PLACEHOLDER IMAGE: Chatbot Interface Screenshot]}
+
+\textit{Screen Description: Conversational AI interface featuring:}
+\begin{itemize}
+    \item Chat window with message history showing user questions and bot responses
+    \item User messages aligned right in blue bubbles
+    \item Bot responses aligned left in white bubbles with Finasaan branding
+    \item Complexity indicator badge on bot messages (Beginner/Intermediate/Advanced)
+    \item Source citations below complex answers with expandable links
+    \item Suggested follow-up questions as clickable chips
+    \item Text input field with microphone icon for voice input (future feature)
+    \item Quick action buttons for common queries ("What is PSX?", "Show my portfolio")
+\end{itemize}
+
+\subsection{Mutual Funds Comparison Screen}
+\textbf{[PLACEHOLDER IMAGE: Mutual Funds Comparison Screenshot]}
+
+\textit{Screen Description: Comparative analysis interface showing:}
+\begin{itemize}
+    \item Filter panel on left side (Fund Type, Risk Level, Shariah Compliance, AUM range)
+    \item Sortable data table displaying fund name, NAV, returns (1M, 3M, 6M, 1Y), AUM, expense ratio
+    \item Color-coded performance indicators (green for positive, red for negative returns)
+    \item "Compare" checkboxes allowing selection of up to 4 funds
+    \item Detailed comparison modal showing selected funds side-by-side
+    \item Performance graphs comparing fund returns over time
+    \item AI recommendation badge highlighting suitable funds based on user profile
+\end{itemize}
+
+\subsection{Tax Calculator Screen}
+\textbf{[PLACEHOLDER IMAGE: Tax Calculator Screenshot]}
+
+\textit{Screen Description: Interactive tax calculation interface with:}
+\begin{itemize}
+    \item Step-by-step form for salary tax calculation
+    \item Input fields for monthly salary, allowances, bonuses
+    \item Real-time calculation display showing tax breakdown
+    \item Visual pie chart illustrating tax distribution
+    \item Comparison with previous year's tax (if applicable)
+    \item "Save Calculation" and "Export PDF" action buttons
+    \item Educational tooltips explaining tax slabs and exemptions
+    \item Link to AI chatbot for tax-related questions
+\end{itemize}
+
+\section{Screen Objects and Actions}
+
+A discussion of screen objects and actions associated with those objects.
+
+\subsection{Navigation Components}
+
+\textbf{Top Navigation Bar:}
+\begin{itemize}
+    \item \textbf{Finasaan Logo:} Clickable, returns to dashboard
+    \item \textbf{Main Menu:} Dropdown revealing all major sections (Dashboard, Stocks, Mutual Funds, Insurance, Tools, Learning Center)
+    \item \textbf{Search Bar:} Global search for stocks, funds, and educational content with autocomplete
+    \item \textbf{Notification Bell:} Displays badge with unread count, opens notification panel on click
+    \item \textbf{User Avatar:} Opens profile menu with options: Profile Settings, Knowledge Level, Portfolio, Logout
+    \item \textbf{Interface Toggle:} Switch between Beginner and Advanced modes
+\end{itemize}
+
+\textbf{Sidebar Navigation (Advanced Mode):}
+\begin{itemize}
+    \item Expandable/collapsible menu with icons and labels
+    \item Sections: Dashboard, Markets, Portfolio, Watchlist, Mutual Funds, Insurance, Tax Tools, Budget Planner, Learning
+    \item Active section highlighted with colored accent
+    \item Submenus expand on hover or click
+\end{itemize}
+
+\subsection{Interactive Data Components}
+
+\textbf{Stock Price Chart:}
+\begin{itemize}
+    \item \textbf{Actions:} Click and drag to zoom, hover to see price at specific time, click timeframe buttons to adjust range
+    \item \textbf{Technical Indicators:} Toggle buttons to show/hide MA, RSI, MACD, Bollinger Bands
+    \item \textbf{Drawing Tools (Advanced):} Trendlines, support/resistance markers
+    \item \textbf{Export Options:} Download chart as PNG or CSV data
+\end{itemize}
+
+\textbf{Data Table (Stocks/Mutual Funds):}
+\begin{itemize}
+    \item \textbf{Column Headers:} Clickable for sorting (ascending/descending)
+    \item \textbf{Row Actions:} Click row to view details, star icon to add to watchlist, plus icon to add to portfolio
+    \item \textbf{Pagination:} Bottom controls showing "Rows per page" dropdown and page navigation
+    \item \textbf{Filters:} Top row with filter inputs for each column
+\end{itemize}
+
+\subsection{AI Chatbot Actions}
+
+\textbf{Chat Input:}
+\begin{itemize}
+    \item \textbf{Text Field:} User types questions, Enter key to submit
+    \item \textbf{Voice Input Button:} Record voice question (future feature)
+    \item \textbf{Attachment Button:} Upload financial documents for analysis (future feature)
+\end{itemize}
+
+\textbf{Chat Response:}
+\begin{itemize}
+    \item \textbf{Source Links:} Clickable citations opening referenced documents
+    \item \textbf{Suggested Questions:} Chips that populate input field on click
+    \item \textbf{Feedback Buttons:} Thumbs up/down to rate response quality
+    \item \textbf{Copy Button:} Copy response text to clipboard
+\end{itemize}
+
+\subsection{Portfolio Management Actions}
+
+\textbf{Add Investment Form:}
+\begin{itemize}
+    \item \textbf{Asset Selection:} Dropdown or search for stock/mutual fund
+    \item \textbf{Quantity Input:} Number field with increment/decrement buttons
+    \item \textbf{Purchase Price:} Decimal input field
+    \item \textbf{Purchase Date:} Date picker calendar
+    \item \textbf{Submit Button:} Adds investment to portfolio with validation
+    \item \textbf{Cancel Button:} Closes form without saving
+\end{itemize}
+
+\textbf{Portfolio Display:}
+\begin{itemize}
+    \item \textbf{Asset Rows:} Show current value, purchase value, profit/loss with color coding
+    \item \textbf{Edit Icon:} Opens form to modify investment details
+    \item \textbf{Delete Icon:} Removes investment with confirmation dialog
+    \item \textbf{Performance Graph:} Visual representation of portfolio growth over time
+\end{itemize}
+
+\subsection{Educational Content Actions}
+
+\textbf{Learning Module Card:}
+\begin{itemize}
+    \item \textbf{Card Click:} Opens module content in new view
+    \item \textbf{Progress Indicator:} Shows completion percentage
+    \item \textbf{Bookmark Icon:} Saves module for later
+    \item \textbf{Share Button:} Generates shareable link
+\end{itemize}
+
+\textbf{Quiz Interface:}
+\begin{itemize}
+    \item \textbf{Multiple Choice:} Radio buttons for single answer
+    \item \textbf{Submit Answer:} Validates and shows correct/incorrect with explanation
+    \item \textbf{Next Question:} Advances to next question
+    \item \textbf{Results Summary:} Shows score and knowledge level update
+\end{itemize}
+
+\subsection{Calculator Tools Actions}
+
+\textbf{Tax Calculator:}
+\begin{itemize}
+    \item \textbf{Input Fields:} Numeric inputs with validation
+    \item \textbf{Calculate Button:} Triggers computation and displays results
+    \item \textbf{Clear Button:} Resets all fields
+    \item \textbf{Save Calculation:} Stores in user history
+    \item \textbf{Export PDF:} Generates downloadable tax summary
+\end{itemize}
+
+\textbf{SIP Calculator:}
+\begin{itemize}
+    \item \textbf{Monthly Investment Slider:} Drag to adjust amount
+    \item \textbf{Duration Slider:} Select investment period in years
+    \item \textbf{Expected Return Input:} Percentage field
+    \item \textbf{Real-time Results:} Updates dynamically as inputs change
+    \item \textbf{Graph Display:} Visual projection of investment growth
+\end{itemize}
+
+\end{document}
