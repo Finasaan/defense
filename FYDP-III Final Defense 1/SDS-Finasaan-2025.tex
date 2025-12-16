@@ -138,7 +138,7 @@ Finasaan is an AI-powered web and mobile platform designed to address Pakistan's
     \item \textbf{Budgeting and Planning:} Personal budget creation, expense tracking, and savings goal monitoring
 \end{itemize}
 
-The system leverages Next.js for frontend, Hono.js for backend, PostgreSQL for structured data, Redis for caching, and Pinecone for vector embeddings. Cloudflare provides CDN and security infrastructure.
+The system leverages Next.js for frontend, Hono.js for backend, and PostgreSQL with pgvector extension for all structured data and vector embeddings. Cloudflare provides CDN, security infrastructure, R2 for object storage, and KV for distributed caching.
 
 % Chapter 2: Design Methodology
 \chapter{Design Methodology and Software Process Model}
@@ -189,11 +189,12 @@ Finasaan follows a modern layered architecture optimized for scalability and mai
         \item Notification \& Communication Service (email, push notifications, SMS)
         \item Analytics \& Reporting Service (user behavior tracking and metrics)
     \end{itemize}
-    \item \textbf{Data Layer:} Multi-database architecture:
+    \item \textbf{Data Layer:} Unified database architecture:
     \begin{itemize}
-        \item PostgreSQL: User accounts, portfolios, financial data, transactions
-        \item Redis: Session management, caching, rate limiting, real-time data
-        \item Pinecone: Vector embeddings for RAG system knowledge base
+        \item PostgreSQL with pgvector: All structured data (user accounts, portfolios, financial data, transactions, vector embeddings for RAG knowledge base)
+        \item Cloudflare R2: Object storage for documents, PDFs, and media assets
+        \item Cloudflare KV: Distributed edge caching for sessions, frequently accessed data, and real-time features
+        \item Cloudflare Secret Store: Secure storage for API credentials and sensitive configuration
     \end{itemize}
     \item \textbf{External Integration Layer:} Connectors to PSX API, MUFAP data, insurance providers, FBR tax information, and financial news sources
 \end{enumerate}
@@ -221,11 +222,12 @@ The system implements a \textbf{Serverless Edge-First Architecture} pattern comb
         \item User Backend: Handles authentication, user profiles, portfolio management, and general API requests
         \item Admin Backend: Manages administrative functions, data scraping coordination, and system configuration
     \end{itemize}
-    \item \textbf{Data Layer:} Multi-database architecture optimized for different access patterns:
+    \item \textbf{Data Layer:} Unified database architecture optimized for performance and scalability:
     \begin{itemize}
-        \item PostgreSQL: Primary relational database for all structured data
+        \item PostgreSQL with pgvector: Primary database for all structured data and vector embeddings for semantic search and RAG
+        \item Cloudflare R2: Object storage for documents, PDFs, and media assets
         \item Cloudflare KV: Distributed edge cache for sessions, frequently accessed data, and real-time features
-        \item Cloudflare R2: Object storage for documents and media
+        \item Cloudflare Secret Store: Encrypted storage for API credentials and sensitive configuration data
     \end{itemize}
     \item \textbf{External Services:} Scheduled data collection (AWS Lambda scrapers), AI inference (Groq), analytics (PostHog), and CI/CD automation (GitHub Actions)
 \end{itemize}
@@ -300,7 +302,7 @@ Data Flow Diagrams illustrate how data moves through the Finasaan system, showin
 
 State transition diagrams model the behavior of objects as they respond to events and change states over time.
 
-\subsection{Data Ingestion & AI Enrichment State Machine}
+\subsection{Data Ingestion \& AI Enrichment State Machine}
 
 \begin{figure}[htb]
     \centering
@@ -313,14 +315,14 @@ State transition diagrams model the behavior of objects as they respond to event
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\textwidth]{images/user_research_session_state_machine.png}
+    \includegraphics[width=\textwidth]{images/user_research_state_machine.png}
     \caption{User Research Session State Machine.}
     \label{fig:user-research-session-state-machine}
 \end{figure}
 % Chapter 5: Data Design
 \chapter{Data Design}
 
-Finasaan's information domain is transformed into data structures using a multi-database architecture. The system employs PostgreSQL for structured relational data (users, portfolios, financial records), Redis for high-speed caching and session management, and Pinecone for vector embeddings supporting the RAG-based AI system.
+Finasaan's information domain is transformed into data structures using a unified PostgreSQL database with pgvector extension. The system stores all structured relational data (users, portfolios, financial records) and vector embeddings for the RAG-based AI system in PostgreSQL, complemented by Cloudflare R2 for object storage and Cloudflare KV for distributed caching.
 
 Major data entities are organized as follows:
 \begin{itemize}
@@ -335,11 +337,12 @@ Major data entities are organized as follows:
 The following sections present the detailed database schemas for PostgreSQL, followed by the data dictionary.
 
 \subsection{Entity-Relationship Diagram}
-
-\textbf{[PLACEHOLDER IMAGE: PostgreSQL Entity-Relationship Diagram (ERD)]}
-
-\textit{Image Description: A comprehensive ER diagram showing the relational structure of Finasaan's PostgreSQL database. Main entities and their relationships: Users table (central entity) connects to user\_knowledge\_profiles (one-to-one), chat\_sessions (one-to-many), and portfolios (one-to-many). Portfolios connects to portfolio\_holdings (one-to-many) which references stocks and mutual\_funds tables. Stocks table relates to stock\_prices (one-to-many) and company\_announcements. Financial Data domain includes mutual\_funds, which connects to mutual\_fund\_nav\_history (one-to-many) and mutual\_fund\_holdings. Insurance domain includes insurance\_providers and insurance\_policies. Chat domain includes chat\_sessions connecting to chat\_messages (one-to-many). News domain includes financial\_news connecting to news\_entities (one-to-many). All relationships shown with crow's foot notation indicating cardinality (1:1, 1:N, N:N). Primary keys shown with PK designation, foreign keys with FK. Attributes listed for key entities showing data types.}
-
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/entity_relation_diagram.png}
+    \caption{Entity-Relationship Diagram (ERD) of Finasaan's PostgreSQL Database.}
+    \label{fig:entity-relationship-diagram}
+\end{figure}
 \section{PostgreSQL Schema}
 
 \subsection{Users Table}
@@ -504,22 +507,29 @@ CREATE INDEX idx_financial_news_source ON financial_news(source);
 CREATE INDEX idx_news_entities_type ON news_entities(entity_type, entity_value);
 \end{verbatim}
 
-\section{Pinecone Vector Database}
+\section{Vector Embeddings Storage}
 
-\subsection{Knowledge Base Vectors}
+\subsection{Knowledge Base Vectors in PostgreSQL}
+Vector embeddings are stored in PostgreSQL tables using the pgvector extension, enabling efficient similarity search for RAG operations. Embeddings are stored as 768-dimensional vectors alongside metadata for retrieval.
+
 \begin{verbatim}
-{
-    "id": "doc-12345",
-    "values": [0.023, -0.451, 0.782, ...], // 768-dim embedding
-    "metadata": {
-        "documentType": "educational_content",
-        "topic": "mutual_funds",
-        "complexity": "beginner",
-        "title": "Introduction to Mutual Funds",
-        "content": "A mutual fund is...",
-        "language": "en"
-    }
-}
+CREATE TABLE knowledge_base_vectors (
+    id SERIAL PRIMARY KEY,
+    document_id VARCHAR(255) UNIQUE NOT NULL,
+    document_type VARCHAR(50) NOT NULL,
+    topic VARCHAR(100),
+    complexity VARCHAR(20),
+    title TEXT,
+    content TEXT,
+    embedding VECTOR(768),
+    language VARCHAR(10) DEFAULT 'en',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX ON knowledge_base_vectors 
+    USING ivfflat (embedding vector_cosine_ops)
+    WITH (lists = 100);
 \end{verbatim}
 
 \section{Data Dictionary}
@@ -769,15 +779,29 @@ Alphabetically list the system entities or major data along with their types and
     \item metadata (JSON): Document metadata including type, topic, complexity, title, content, and language
 \end{itemize}
 
-\subsection{Cache Layer Entities}
+\subsection{Cache Layer and Object Storage Entities}
 
-\textbf{Redis Cache Keys:}
+\textbf{Cloudflare KV Cache Keys:}
 \begin{itemize}
     \item session:[user\_id] - User session data with TTL
     \item cache:stock:[symbol] - Cached stock data with short TTL
     \item cache:nav:[fund\_id] - Cached mutual fund NAV data
-    \item queue:data-updates - Background job queue for data processing
     \item ratelimit:[endpoint]:[user\_id] - API rate limiting counters
+\end{itemize}
+
+\textbf{Cloudflare R2 Object Storage:}
+\begin{itemize}
+    \item documents/ - PDFs and educational materials
+    \item reports/ - Generated user reports and exports
+    \item media/ - Images, logos, and media assets
+    \item backups/ - Database and data backups
+\end{itemize}
+
+\textbf{Cloudflare Secret Store:}
+\begin{itemize}
+    \item API credentials for external services (PSX, MUFAP, insurance providers)
+    \item Database connection strings and credentials
+    \item Authentication tokens and secrets
 \end{itemize}
 
 % Chapter 6: User Interface Design
@@ -789,94 +813,85 @@ The interface maintains consistency across all modules through uniform design pa
 
 \section{Screen Images}
 
-Display screenshots showing the interface from the user's perspective. These screenshots are designed using Figma and represent the actual implementation.
+The following screenshots illustrate the actual implementation of the Finasaan user interface, highlighting the user journey from authentication to the main learning dashboard.
 
-\subsection{Main Dashboard - Beginner Mode}
-\textbf{[PLACEHOLDER IMAGE: Beginner Dashboard Screenshot]}
+\subsection{Authentication and Account Recovery}
 
-\textit{Screen Description: The beginner dashboard features a clean, uncluttered layout with large, easily tappable elements. The top navigation bar displays the Finasaan logo, a simple menu icon, and notification bell. The main content area shows:}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.40\textwidth]{images/ui/login.png}
+    \hspace{0.05\textwidth}
+    \includegraphics[width=0.40\textwidth]{images/ui/reset_password.png}
+    \caption{Login Interface (left) and Password Recovery Screen (right)}
+    \label{fig:auth_screens}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.40\textwidth]{images/ui/verify_otp.png}
+    \caption{OTP Verification Screen}
+    \label{fig:otp_screen}
+\end{figure}
+
+\textit{Screen Description: A split-screen layout featuring high-quality imagery on the left with the slogan ``Learn. Invest. Grow'' and the authentication form on the right.}
 \begin{itemize}
-    \item Welcome message with user's name and current financial literacy level indicator
-    \item Persistent AI chatbot widget in bottom-right corner with a friendly greeting
-    \item Four large, colorful tiles representing main sections: "Learn About Stocks", "Explore Mutual Funds", "Understand Insurance", "Calculate Your Taxes"
-    \item Each tile contains an icon, title, and brief one-sentence description
-    \item Progress bar showing learning journey completion (e.g., "15\% Complete")
-    \item "What would you like to learn today?" search bar with example queries
+    \item Login Interface: Clean input fields for Email and Password, a prominent green ``Login'' button, and options for ``Continue with Google'' or ``Sign Up''.
+    \item Password Recovery: A dedicated ``Reset Password'' screen allowing users to securely update credentials with ``New Password'' and ``Confirm Password'' fields.
+    \item Visual Identity: Consistent branding with the Finasaan logo in the top-left and deep green accents reflecting the financial growth theme.
 \end{itemize}
 
-\subsection{Main Dashboard - Advanced Mode}
-\textbf{[PLACEHOLDER IMAGE: Advanced Dashboard Screenshot]}
+\subsection{Intelligent Onboarding Journey}
 
-\textit{Screen Description: The advanced dashboard maximizes information density while maintaining usability. The interface displays:}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.28\textwidth]{images/ui/onboarding_1.png}
+    \hspace{0.02\textwidth}
+    \includegraphics[width=0.28\textwidth]{images/ui/onboarding_2.png}
+    \hspace{0.02\textwidth}
+    \includegraphics[width=0.28\textwidth]{images/ui/onboarding_3.png}
+    \caption{Onboarding Journey - Steps 1-3}
+    \label{fig:onboarding_1_3}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.28\textwidth]{images/ui/onboarding_4.png}
+    \hspace{0.02\textwidth}
+    \includegraphics[width=0.28\textwidth]{images/ui/onboarding_5.png}
+    \hspace{0.02\textwidth}
+    \includegraphics[width=0.28\textwidth]{images/ui/onboarding_6.png}
+    \caption{Onboarding Journey - Steps 4-6}
+    \label{fig:onboarding_4_6}
+\end{figure}
+
+\textit{Screen Description: A multi-step, dark-themed onboarding wizard designed to profile the user and tailor the learning experience.}
 \begin{itemize}
-    \item Compact top navigation with direct links to all major sections
-    \item Multi-widget layout with customizable arrangement
-    \item Real-time market summary widget showing KSE-100 index, top gainers/losers
-    \item Personal portfolio performance widget with graphs and percentage changes
-    \item Watchlist widget showing tracked stocks and mutual funds with live prices
-    \item News feed widget with latest financial news articles
-    \item AI chatbot minimized to icon in corner but expandable on demand
-    \item Quick action buttons for common tasks (Buy/Sell, Add to Portfolio, etc.)
+    \item Personalization: The system asks ``What best describes you?'' with a dropdown menu (Student, Employed, Self Employed, Homemaker, etc.) to adapt content complexity.
+    \item Interest Selection: A grid of selectable topic chips (e.g., ``Mutual Funds'', ``Stock Market \& PSX'', ``Taxation'', ``Retirement Planning'') allowing users to customize their feed.
+    \item Navigation: Simple ``Back'' and ``Continue'' controls ensuring a smooth setup process without overwhelming the user.
 \end{itemize}
 
-\subsection{Stock Analysis Screen}
-\textbf{[PLACEHOLDER IMAGE: Stock Analysis Screenshot]}
+\subsection{Main Dashboard and Navigation}
 
-\textit{Screen Description: Comprehensive stock analysis interface showing:}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/ui/dashboard_basic.png}
+    \caption{Main Dashboard Interface with Sidebar Navigation}
+    \label{fig:dashboard}
+\end{figure}
+
+\textit{Screen Description: The central hub of the application, featuring a sidebar navigation layout for easy access to all modules.}
 \begin{itemize}
-    \item Company header with logo, name, symbol, and current price prominently displayed
-    \item Interactive price chart with adjustable timeframes (1D, 1W, 1M, 3M, 1Y, 5Y)
-    \item Technical indicators panel (Moving Averages, RSI, MACD) with toggle controls
-    \item Fundamental data section displaying P/E ratio, EPS, dividend yield, market cap
-    \item AI-generated analysis summary card explaining whether to buy, hold, or sell
-    \item Company description and recent announcements section
-    \item "Add to Watchlist" and "Add to Portfolio" action buttons
+    \item Top Navigation: Contains a global search bar (``Search finasaan''), notification bell, and user profile management.
+    \item Sidebar Menu:
+    \begin{itemize}
+        \item Home: The landing view.
+        \item FinasaanGPT: Direct access to the AI financial assistant.
+        \item Learn: Sub-menus for ``My Journeys'', ``Recommended'', ``Explore'', and ``Bookmarks''.
+        \item Info: Expandable categories for ``Stocks'', ``Mutual Funds'', ``Insurance'', and ``Taxation''.
+    \end{itemize}
+    \item Layout: A clean, whitespace-rich main content area ready to display dynamic widgets, charts, or learning modules based on the user's selection.
 \end{itemize}
-
-\subsection{AI Chatbot Interface}
-\textbf{[PLACEHOLDER IMAGE: Chatbot Interface Screenshot]}
-
-\textit{Screen Description: Conversational AI interface featuring:}
-\begin{itemize}
-    \item Chat window with message history showing user questions and bot responses
-    \item User messages aligned right in blue bubbles
-    \item Bot responses aligned left in white bubbles with Finasaan branding
-    \item Complexity indicator badge on bot messages (Beginner/Intermediate/Advanced)
-    \item Source citations below complex answers with expandable links
-    \item Suggested follow-up questions as clickable chips
-    \item Text input field with microphone icon for voice input (future feature)
-    \item Quick action buttons for common queries ("What is PSX?", "Show my portfolio")
-\end{itemize}
-
-\subsection{Mutual Funds Comparison Screen}
-\textbf{[PLACEHOLDER IMAGE: Mutual Funds Comparison Screenshot]}
-
-\textit{Screen Description: Comparative analysis interface showing:}
-\begin{itemize}
-    \item Filter panel on left side (Fund Type, Risk Level, Shariah Compliance, AUM range)
-    \item Sortable data table displaying fund name, NAV, returns (1M, 3M, 6M, 1Y), AUM, expense ratio
-    \item Color-coded performance indicators (green for positive, red for negative returns)
-    \item "Compare" checkboxes allowing selection of up to 4 funds
-    \item Detailed comparison modal showing selected funds side-by-side
-    \item Performance graphs comparing fund returns over time
-    \item AI recommendation badge highlighting suitable funds based on user profile
-\end{itemize}
-
-\subsection{Tax Calculator Screen}
-\textbf{[PLACEHOLDER IMAGE: Tax Calculator Screenshot]}
-
-\textit{Screen Description: Interactive tax calculation interface with:}
-\begin{itemize}
-    \item Step-by-step form for salary tax calculation
-    \item Input fields for monthly salary, allowances, bonuses
-    \item Real-time calculation display showing tax breakdown
-    \item Visual pie chart illustrating tax distribution
-    \item Comparison with previous year's tax (if applicable)
-    \item "Save Calculation" and "Export PDF" action buttons
-    \item Educational tooltips explaining tax slabs and exemptions
-    \item Link to AI chatbot for tax-related questions
-\end{itemize}
-
 \section{Screen Objects and Actions}
 
 A discussion of screen objects and actions associated with those objects.

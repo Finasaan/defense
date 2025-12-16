@@ -1,0 +1,133 @@
+erDiagram
+    %% USER DOMAIN
+    users {
+        UUID user_id PK
+        VARCHAR email
+        VARCHAR password_hash
+        VARCHAR full_name
+        VARCHAR knowledge_level
+        TIMESTAMP registration_date
+    }
+
+    user_knowledge_profiles {
+        SERIAL profile_id PK
+        INTEGER user_id FK
+        DECIMAL concept_mastery_stocks
+        DECIMAL concept_mastery_mutual_funds
+        VARCHAR learning_pace
+        VARCHAR preferred_complexity
+    }
+
+    user_interaction_history {
+        SERIAL interaction_id PK
+        INTEGER profile_id FK
+        VARCHAR topic
+        INTEGER questions_asked
+        BOOLEAN understood
+    }
+
+    %% CHAT DOMAIN
+    chat_sessions {
+        UUID session_id PK
+        INTEGER user_id FK
+        TIMESTAMP start_time
+        TEXT context
+        TEXT summary
+    }
+
+    chat_messages {
+        UUID message_id PK
+        UUID session_id FK
+        VARCHAR sender
+        TEXT content
+        VARCHAR response_complexity
+        TEXT[] sources
+    }
+
+    %% PORTFOLIO DOMAIN
+    portfolios {
+        SERIAL portfolio_id PK
+        UUID user_id FK
+        TIMESTAMP created_at
+        TIMESTAMP last_updated
+    }
+
+    portfolio_holdings {
+        SERIAL holding_id PK
+        INTEGER portfolio_id FK
+        VARCHAR asset_type
+        INTEGER asset_id
+        DECIMAL quantity
+        DECIMAL avg_purchase_price
+    }
+
+    %% FINANCIAL DATA DOMAIN
+    stocks {
+        SERIAL stock_id PK
+        VARCHAR symbol
+        VARCHAR company_name
+        VARCHAR sector
+        DECIMAL market_cap
+        DECIMAL pe_ratio
+    }
+
+    stock_prices {
+        SERIAL price_id PK
+        INTEGER stock_id FK
+        DATE date
+        DECIMAL close_price
+        DECIMAL volume
+    }
+
+    mutual_funds {
+        SERIAL fund_id PK
+        VARCHAR fund_name
+        VARCHAR fund_type
+        DECIMAL nav
+        DECIMAL aum
+        BOOLEAN is_shariah_compliant
+    }
+
+    %% NEWS DOMAIN
+    financial_news {
+        SERIAL news_id PK
+        TEXT title
+        VARCHAR source
+        DECIMAL sentiment
+        TIMESTAMP published_date
+    }
+
+    news_entities {
+        SERIAL entity_id PK
+        INTEGER news_id FK
+        VARCHAR entity_type
+        VARCHAR entity_value
+    }
+
+    %% VECTOR STORAGE (Standalone for Search)
+    knowledge_base_vectors {
+        SERIAL id PK
+        VARCHAR document_id
+        VECTOR embedding
+        VARCHAR topic
+        VARCHAR complexity
+    }
+
+    %% RELATIONSHIPS
+    users ||--|| user_knowledge_profiles : "has (1:1)"
+    users ||--o{ portfolios : "owns"
+    users ||--o{ chat_sessions : "initiates"
+    
+    user_knowledge_profiles ||--o{ user_interaction_history : "logs"
+    
+    chat_sessions ||--o{ chat_messages : "contains"
+    
+    portfolios ||--o{ portfolio_holdings : "contains"
+    
+    stocks ||--o{ stock_prices : "tracks history"
+    
+    financial_news ||--o{ news_entities : "mentions"
+
+    %% POLYMORPHIC RELATIONSHIPS (Logical links based on asset_type)
+    portfolio_holdings }|..|| stocks : "refs (if type=stock)"
+    portfolio_holdings }|..|| mutual_funds : "refs (if type=fund)"
