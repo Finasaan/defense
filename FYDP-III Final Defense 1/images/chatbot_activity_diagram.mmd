@@ -1,0 +1,90 @@
+flowchart TB
+
+    %% ===== Styling =====
+    classDef error stroke:#ff0000,stroke-width:2px,color:#ff0000;
+    classDef decision stroke:#FFA500,stroke-width:2px;
+
+    %% ===== Swimlanes =====
+    subgraph UserLane["User"]
+        U_Submit((Submit Question))
+        U_View[View Response]
+    end
+
+    subgraph FE["Frontend (Next.js)"]
+        F_Validate{Input Valid?}
+        F_ShowError[Display Input Error]
+        F_Req[Send Request to API]
+        F_Render["Render Formatted Response<br/>Markdown/Latex"]
+    end
+
+    subgraph BE["Backend API (Hono on Workers)"]
+        B_Rec[Receive Message]
+        B_Auth[Authenticate & Rate Limit]
+        B_Profile{Fetch Profile}
+        B_Cache[Retrieve from KV Cache]
+        B_DB_Prof[Retrieve from PostgreSQL]
+        B_CheckRAG{"Requires RAG?<br/>Query Complexity"}
+        %% FIXED LINE BELOW: Added quotes around the label
+        B_PrepPrompt["Construct System Prompt<br/>(User Level + Context)"] 
+        B_Adapt[Adapt Response Tone/Depth]
+        B_Citations[Append Sources & Citations]
+        B_ErrHandler[Handle API Error]
+    end
+
+    subgraph Knowledge["Knowledge Service (pgvector)"]
+        K_Embed[Generate Query Embedding]
+        K_Search["Vector Search<br/>PostgreSQL pgvector"]
+        K_Result[Return Top-K Chunks]
+    end
+
+    subgraph AI_Svc["LLM Service (Groq via Gateway)"]
+        L_Call[Call Groq AI Model]
+        L_Stream[Stream Response Token]
+    end
+
+    %% ===== Flow Logic =====
+
+    %% 1. User Interaction
+    U_Submit --> F_Validate
+
+    %% 2. Frontend Validation
+    F_Validate -->|No| F_ShowError
+    F_ShowError --> U_View
+    F_Validate -->|Yes| F_Req
+
+    %% 3. Backend Processing
+    F_Req --> B_Rec
+    B_Rec --> B_Auth
+    B_Auth --> B_Profile
+
+    %% Profile Fetching (Cache vs DB Strategy)
+    B_Profile -->|Hit| B_Cache
+    B_Profile -->|Miss| B_DB_Prof
+    B_Cache --> B_CheckRAG
+    B_DB_Prof --> B_CheckRAG
+
+    %% 4. Knowledge Retrieval (Optional RAG)
+    B_CheckRAG -->|Simple/Chit-chat| B_PrepPrompt
+    B_CheckRAG -->|Complex/Knowledge| K_Embed
+
+    K_Embed --> K_Search
+    K_Search --> K_Result
+    K_Result --> B_PrepPrompt
+
+    %% 5. LLM Interaction
+    B_PrepPrompt --> L_Call
+    L_Call -->|Timeout/Fail| B_ErrHandler
+    L_Call -->|Success| L_Stream
+
+    %% 6. Post Processing & Adaptation
+    L_Stream --> B_Adapt
+    B_Adapt --> B_Citations
+    B_Citations --> F_Render
+
+    %% 7. Final Output
+    F_Render --> U_View
+    B_ErrHandler -->|Return Error| F_Render
+
+    %% Styling Application
+    class F_Validate,B_Profile,B_CheckRAG decision;
+    class F_ShowError,B_ErrHandler error;

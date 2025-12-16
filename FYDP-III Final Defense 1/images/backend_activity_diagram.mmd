@@ -1,0 +1,74 @@
+flowchart TB
+
+    %% ===== Swimlanes =====
+    subgraph Trigger["Trigger"]
+        T_Start((Start))
+        T_Manual[Manual Trigger<br/>Admin Action]
+        T_Auto[Automated Trigger<br/>Scheduled / Event-based]
+    end
+
+    subgraph AdminBackend["Backend Admin Worker"]
+        A_Init[Initialize Aggregation Job]
+        A_CheckAPI{API Available?}
+        A_ScrapeWorker[Scrape Data<br/>Inside Admin Worker]
+        A_InvokeLambda[Invoke Scraper Lambda]
+        A_Validate[Validate & Normalize Data]
+        A_Insert[Insert / Update Data]
+        A_GenerateEmbed[Generate Embeddings]
+        A_Error{Errors Occurred?}
+        A_NotifyFail[Notify Admin<br/>Failure]
+        A_NotifySuccess[Notify Admin<br/>Success]
+        A_UpdateMeta[Update Job Metadata]
+    end
+
+    subgraph ExternalJobs["External Scraping"]
+        L_Scrape[AWS Lambda<br/>Scraping Job]
+    end
+
+    subgraph AI["AI Processing"]
+        E_Model[Embeddings Model]
+        AI_Gateway[AI Gateway]
+        LLM[Groq AI Model]
+    end
+
+    subgraph Storage["Storage"]
+        DB[(PostgreSQL<br/>pgvector)]
+        R2[Cloudflare R2]
+    end
+
+    %% ===== Trigger Flow =====
+    T_Start --> T_Manual
+    T_Start --> T_Auto
+    T_Manual --> A_Init
+    T_Auto --> A_Init
+
+    %% ===== Data Collection =====
+    A_Init --> A_CheckAPI
+
+    A_CheckAPI -->|Yes| A_Validate
+    A_CheckAPI -->|No| A_ScrapeWorker
+
+    A_ScrapeWorker -->|Light / Short Job| A_Validate
+    A_ScrapeWorker -->|Heavy / Long Job| A_InvokeLambda
+
+    A_InvokeLambda --> L_Scrape --> A_Validate
+
+    %% ===== Data Persistence =====
+    A_Validate --> A_Insert
+    A_Insert --> DB
+    A_Insert --> R2
+
+    %% ===== Embedding Generation =====
+    A_Insert --> A_GenerateEmbed
+    A_GenerateEmbed --> E_Model --> AI_Gateway --> LLM
+    LLM --> DB
+
+    %% ===== Completion =====
+    A_GenerateEmbed --> A_Error
+    A_Error -->|Yes| A_NotifyFail
+    A_Error -->|No| A_NotifySuccess
+
+    A_NotifyFail --> A_UpdateMeta
+    A_NotifySuccess --> A_UpdateMeta
+
+    A_UpdateMeta --> EndNode((End))

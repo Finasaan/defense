@@ -1,0 +1,53 @@
+flowchart TB
+
+    %% ===== Swimlanes =====
+    subgraph User["User"]
+        U_Start((Start))
+        U_Enter[Enter Registration Information]
+        U_Email[Provide Email]
+        U_Password[Set Password]
+        U_ClickLink[Click Verification Link]
+        U_End((End))
+    end
+
+    subgraph WebApp["Web Application"]
+        W_Validate[Validate Input Data]
+        W_ShowError[Display Validation Error]
+        W_SendRequest[Send Registration Request]
+        W_ShowSuccess[Display Registration Success]
+        W_ShowRetry[Show Verification Retry Option]
+        W_Confirmed[Display Account Confirmed]
+    end
+
+    subgraph Backend["Backend Services"]
+        B_Check[Check Email Uniqueness]
+        B_Create[Create User Account]
+        B_SendEmail[Send Verification Email]
+        B_Verify{Email Verified?}
+        B_Enable[Enable User Account]
+    end
+
+    %% ===== Main Flow =====
+    U_Start --> U_Enter --> U_Email --> U_Password --> W_Validate
+
+    %% ===== Validation Decision =====
+    W_Validate -->|Invalid email / weak password| W_ShowError
+    W_ShowError --> U_Enter
+
+    W_Validate -->|Valid input| W_SendRequest
+
+    %% ===== Backend Processing =====
+    W_SendRequest --> B_Check
+    B_Check -->|Email exists| W_ShowError
+    B_Check -->|Email new| B_Create
+
+    %% ===== Parallel Actions =====
+    B_Create --> B_SendEmail
+    B_Create --> W_ShowSuccess
+
+    %% ===== Email Verification =====
+    B_SendEmail --> U_ClickLink
+    U_ClickLink --> B_Verify
+
+    B_Verify -->|Yes| B_Enable --> W_Confirmed --> U_End
+    B_Verify -->|No / Timeout| W_ShowRetry

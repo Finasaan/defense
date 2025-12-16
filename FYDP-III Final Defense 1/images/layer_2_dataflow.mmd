@@ -1,0 +1,56 @@
+flowchart TB
+    %% Level 2 DFD - Process 3.0 (AI Chatbot)
+
+    %% --- External ---
+    User[("User")]
+    Groq[("External AI Service<br/>(Groq)")]
+
+    %% --- Sub-Processes ---
+    P3_1((3.1<br/>Validate Query))
+    P3_2((3.2<br/>Retrieve User<br/>Context))
+    P3_3((3.3<br/>Search Knowledge<br/>Base))
+    P3_4((3.4<br/>Prepare LLM Input))
+    P3_5((3.5<br/>Call LLM Service))
+    P3_6((3.6<br/>Post-Process<br/>Response))
+
+    %% --- Data Stores ---
+    D1[("D1: Users")]
+    D2[("D2: Financial Data<br/>(pgvector)")]
+
+    %% --- Flows ---
+    
+    %% Flow Start
+    User -->|User Query| P3_1
+    
+    %% Validation
+    P3_1 -->|Valid Query| P3_2
+    P3_1 -->|Invalid Format| P3_6
+    
+    %% Context Retrieval
+    P3_2 -->|Fetch Profile/Prefs| D1
+    D1 -->|User Profile| P3_2
+    P3_2 -->|Query + User Context| P3_3
+
+    %% Knowledge Search (RAG)
+    P3_3 -->|Vector Search| D2
+    D2 -->|Top-k Chunks| P3_3
+    P3_3 -->|Query + Context + Chunks| P3_4
+
+    %% Prompt Prep
+    P3_4 -->|Constructed System Prompt| P3_5
+
+    %% LLM Call
+    P3_5 <-->|API Request / Response| Groq
+    P3_5 -->|Raw Text Response| P3_6
+
+    %% Post-Processing
+    P3_6 -->|Formatted Response| User
+
+    %% Styling
+    classDef entity fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef process fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef store fill:#e0e0e0,stroke:#616161,stroke-width:2px,shape:cylinder;
+
+    class User,Groq entity;
+    class P3_1,P3_2,P3_3,P3_4,P3_5,P3_6 process;
+    class D1,D2 store;

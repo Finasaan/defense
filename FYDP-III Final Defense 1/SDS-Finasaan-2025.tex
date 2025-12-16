@@ -200,107 +200,101 @@ Finasaan follows a modern layered architecture optimized for scalability and mai
 
 \textbf{Box-and-Line Diagram:}
 
-\textbf{[PLACEHOLDER IMAGE: High-Level System Architecture Diagram]}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/box_and_line_architecture.png}
+    \caption{High-level Finasaan system architecture.}
+    \label{fig:overall-architecture}
+\end{figure}
 
-\textit{Image Description: A box-and-line diagram showing the system's modular structure. At the top, a "Web Browser" box connects to "Next.js Frontend (Presentation Layer)" which connects bidirectionally to "Hono.js API Gateway (Application Layer)" below. The API Gateway connects to five service boxes arranged horizontally: "Auth Service", "Financial Data Service", "AI Service", "Analytics Service", and "Notification Service". Below these services, three database boxes are shown: "PostgreSQL" (left), "Redis Cache" (center), and "Pinecone Vector DB" (right), all connecting to their respective services with arrows. At the bottom, four external entity boxes are shown: "PSX API", "MUFAP Data", "Insurance APIs", and "News Sources", connecting upward to the Financial Data Service. On the sides, show "Cloudflare CDN/WAF" as a protective boundary wrapping the entire system. Use solid lines for direct connections, dashed lines for external integrations, and arrows to indicate data flow direction.}
+% See Figure~\ref{fig:overall-architecture} for the overall architecture diagram.
 
 \textbf{Architecture Pattern:}
 
-The system implements a \textbf{Layered Architecture} pattern combined with service-oriented design:
+The system implements a \textbf{Serverless Edge-First Architecture} pattern combined with microservices:
 
 \begin{itemize}
-    \item \textbf{Presentation Layer:} Handles user interface, client-side routing, and responsive design. Communicates with Application Layer via REST APIs
-    \item \textbf{Application Layer:} Contains business logic organized into loosely-coupled services. Each service has well-defined responsibilities and interfaces
-    \item \textbf{Data Layer:} Provides data persistence and retrieval. Multiple specialized databases optimize for different access patterns (relational, caching, vector similarity)
-    \item \textbf{External Integration Layer:} Abstracts external dependencies behind consistent interfaces, enabling flexibility in data source changes
+    \item \textbf{Edge Layer (Cloudflare):} Global content delivery network providing DNS, WAF, DDoS protection, and edge computing. Acts as the first security and performance boundary for all incoming traffic
+    \item \textbf{Frontend (Next.js on Cloudflare Workers):} Server-rendered React application deployed globally on serverless Workers, providing responsive UI with client-side routing and PWA capabilities
+    \item \textbf{Backend Services (Hono.js on Cloudflare Workers):} Two independent microservices:
+    \begin{itemize}
+        \item User Backend: Handles authentication, user profiles, portfolio management, and general API requests
+        \item Admin Backend: Manages administrative functions, data scraping coordination, and system configuration
+    \end{itemize}
+    \item \textbf{Data Layer:} Multi-database architecture optimized for different access patterns:
+    \begin{itemize}
+        \item PostgreSQL: Primary relational database for all structured data
+        \item Cloudflare KV: Distributed edge cache for sessions, frequently accessed data, and real-time features
+        \item Cloudflare R2: Object storage for documents and media
+    \end{itemize}
+    \item \textbf{External Services:} Scheduled data collection (AWS Lambda scrapers), AI inference (Groq), analytics (PostHog), and CI/CD automation (GitHub Actions)
 \end{itemize}
 
-Each layer communicates only with adjacent layers through defined interfaces, ensuring separation of concerns and maintainability. Cloudflare provides edge caching, DDoS protection, and SSL/TLS management as infrastructure services wrapping the entire architecture.
+This architecture prioritizes low-latency global delivery through edge computing, automatic scaling via serverless infrastructure, and separation of concerns through microservices. All components are managed through Infrastructure as Code using Terraform and Wrangler.
 
 % Chapter 4: Design Models
 \chapter{Design Models}
 
-This chapter presents comprehensive UML 2.5 design models that describe Finasaan's structure, behavior, and interactions. These models provide detailed specifications for implementation and serve as communication tools among development team members.
+This chapter presents design models applicable to Finasaan's procedural development approach. As the project uses procedural design methodology, the relevant design models include activity diagrams, data flow diagrams, and state transition diagrams for event handling and backend processes.
 
-\section{Class Diagram}
+\section{Activity Diagrams}
 
-The class diagram illustrates the static structure of Finasaan, showing the main classes, their attributes, methods, and relationships.
+Activity diagrams model the workflow and business logic of system processes, showing the flow from activity to activity.
 
-\textbf{[PLACEHOLDER IMAGE: Comprehensive Class Diagram]}
+\subsection{User Registration and Onboarding Activity Diagram}
 
-\textit{Image Description: A detailed UML 2.5 class diagram showing the core classes of Finasaan system. Top-left section: User class (attributes: userId:String, email:String, passwordHash:String, name:String, phoneNumber:String, registrationDate:Date, knowledgeLevel:Enum; methods: register(), login(), updateProfile(), getKnowledgeProfile()). Connected via composition to UserKnowledgeProfile class (attributes: profileId:String, userId:String, conceptMasteryMap:Map<String,Float>, learningPace:String, preferredComplexity:String; methods: updateMastery(), assessLevel(), getRecommendations()). Top-right: Investment abstract class with subclasses Stock, MutualFund, Insurance (inheritance relationships shown with hollow triangles). Investment class has attributes: investmentId:String, name:String, currentValue:Decimal, purchaseDate:Date. Stock subclass adds: symbol:String, shares:Integer, sector:String. MutualFund adds: fundType:String, nav:Decimal, expenseRatio:Float. Center: Portfolio class (attributes: portfolioId:String, userId:String, investments:List<Investment>, totalValue:Decimal; methods: addInvestment(), calculateReturns(), getRiskProfile()). Bottom-left: ChatSession class connected to Message class (one-to-many). ChatSession (attributes: sessionId:String, userId:String, startTime:DateTime, context:String[]; methods: sendMessage(), getHistory()). Message (attributes: messageId:String, content:String, timestamp:DateTime, sender:String, responseComplexity:String). Bottom-right: FinancialCalculator interface with implementations TaxCalculator, SIPCalculator, RetirementCalculator (realization relationships shown with dashed arrows). Use proper UML notation: rectangles for classes divided into three compartments (name, attributes, methods), lines for associations with multiplicities (1, *, 0..1), hollow triangles for inheritance, filled diamond for composition, hollow diamond for aggregation. Color coding: blue for user-related classes, green for investment classes, orange for AI/chatbot classes, purple for calculator classes. Include proper visibility markers (+public, -private, \#protected) and data types for all attributes.}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/user_registration_activity_diagram.png}
+    \caption{User Registration and Onboarding Activity Diagram.}
+    \label{fig:user-registration-activity}
+\end{figure}
+\subsection{Financial Data Aggregation and Update Activity Diagram}
 
-\subsection{Key Classes Description}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/backend_activity_diagram.png}
+    \caption{Financial Data Aggregation and Update Activity Diagram.}
+    \label{fig:financial-data-aggregation-activity}
+\end{figure}
+\subsection{AI Chatbot Query Processing Activity Diagram}
 
-\textbf{User Class:}
-\begin{itemize}
-    \item Represents system users with authentication credentials
-    \item Manages user profile information and preferences
-    \item Associates with UserKnowledgeProfile for adaptive learning
-    \item Links to Portfolio and ChatSession for user activities
-\end{itemize}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/chatbot_activity_diagram.png}
+    \caption{AI Chatbot Query Processing Activity Diagram.}
+    \label{fig:ai-chatbot-query-processing-activity}
+\end{figure}
 
-\textbf{UserKnowledgeProfile Class:}
-\begin{itemize}
-    \item Tracks user's financial literacy progression
-    \item Maintains concept mastery scores across financial topics
-    \item Determines appropriate response complexity for AI interactions
-    \item Provides personalized learning recommendations
-\end{itemize}
+\section{Data Flow Diagrams}
 
-\textbf{Investment Hierarchy:}
-\begin{itemize}
-    \item Abstract Investment class defines common investment properties
-    \item Stock, MutualFund, Insurance subclasses implement specific behaviors
-    \item Enables polymorphic handling of diverse investment types
-    \item Supports portfolio diversification tracking
-\end{itemize}
+Data Flow Diagrams illustrate how data moves through the Finasaan system, showing processes, data stores, and external entities at multiple decomposition levels.
 
-\textbf{Portfolio Class:}
-\begin{itemize}
-    \item Aggregates user's investments across asset classes
-    \item Calculates total portfolio value and returns
-    \item Provides risk assessment based on asset allocation
-    \item Generates performance reports and insights
-\end{itemize}
+\subsection{Context Diagram (Level 0 DFD)}
 
-\textbf{ChatSession and Message Classes:}
-\begin{itemize}
-    \item Manages conversational interactions with AI chatbot
-    \item Maintains context across multiple message exchanges
-    \item Stores response complexity levels for consistency
-    \item Enables conversation history retrieval
-\end{itemize}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/layer_0_data_flow.png}
+    \caption{Context Diagram (Level 0 DFD).}
+    \label{fig:context-diagram-level-0}
+\end{figure}
+\subsection{Level 1 DFD - System Decomposition}
 
-\textbf{FinancialCalculator Interface:}
-\begin{itemize}
-    \item Defines common interface for financial computation tools
-    \item Implemented by TaxCalculator, SIPCalculator, RetirementCalculator
-    \item Ensures consistent calculator behavior and extensibility
-    \item Facilitates factory pattern for calculator instantiation
-\end{itemize}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/layer_1_dataflow.png}
+    \caption{Level 1 DFD - System Decomposition.}
+    \label{fig:level-1-dfd}
+\end{figure}
 
-\section{Sequence Diagrams}
+\subsection{Level 2 DFD - Selected Process Decomposition}
 
-Sequence diagrams illustrate the dynamic interactions between objects over time for key use cases.
-
-\subsection{User Registration and Onboarding}
-
-\textbf{[PLACEHOLDER IMAGE: User Registration Sequence Diagram]}
-
-\textit{Image Description: A UML 2.5 sequence diagram showing user registration flow from left to right. Actors/Objects across the top (each with lifeline): User (stick figure), Web Interface (box), API Gateway (box), Authentication Service (box), User Database (cylinder), Email Service (box). Sequence flow: 1) User to Web Interface: Enter registration details, 2) Web Interface to API Gateway: POST /api/v1/auth/register, 3) API Gateway to Authentication Service: validateRegistrationData(), 4) Authentication Service to User Database: checkEmailExists(), User Database returns false, 5) Authentication Service to Authentication Service: hashPassword() (self-call with execution occurrence), 6) Authentication Service to User Database: createUser(userData), User Database returns userId, 7) Authentication Service to Email Service: sendVerificationEmail(userId, email), Email Service returns emailSent, 8) Authentication Service to API Gateway: return success userId message, 9) API Gateway to Web Interface: 200 OK with userId Verification email sent, 10) Web Interface to User: Display success message and prompt to check email. Include activation bars on lifelines during processing, use solid arrows for synchronous calls, dashed arrows for returns. Add frame labeled sd User Registration around entire diagram. Use alt frame for alternative flow showing email already exists error. Include timing annotations showing approximately 500ms total response time.}
-
-\subsection{AI Chatbot Interaction with RAG}
-
-\textbf{[PLACEHOLDER IMAGE: Chatbot RAG Sequence Diagram]}
-
-\textit{Image Description: A comprehensive UML 2.5 sequence diagram illustrating the RAG-powered chatbot interaction. Actors/Objects across top: User, Web Interface, API Gateway, AI Service, User Knowledge Service, Vector Database (Pinecone), LLM Service (Gemini/Groq), Response Processor. Flow: 1) User to Web Interface: Ask question 'What is a mutual fund?', 2) Web Interface to API Gateway: POST /api/v1/chat/message, 3) API Gateway to AI Service: processMessage, 4) AI Service to User Knowledge Service: getUserKnowledgeProfile returns knowledgeProfile, 5) AI Service self-call: generateQueryEmbedding, 6) AI Service to Vector Database: similaritySearch returns relevantDocuments, 7) AI Service self-call: constructPrompt showing prompt assembly, 8) AI Service to LLM Service: generateResponse with long activation bar returns generatedText, 9) AI Service to Response Processor: adaptResponseComplexity returns adaptedResponse, 10) AI Service to User Knowledge Service: updateInteraction, 11) AI Service to API Gateway: return response with confidence and sources, 12) API Gateway to Web Interface: 200 OK with chatResponse, 13) Web Interface to User: Display response with sources. Include opt frames for caching check and error handling. Show parallel processes with par frame for logging and analytics. Use different colored activation bars to show processing intensity (red for LLM inference as slowest). Add notes indicating approximately 2-3 second total response time, with LLM inference taking approximately 1.5 seconds.}
-
-\subsection{Stock Investment Analysis Flow}
-
-\textbf{[PLACEHOLDER IMAGE: Stock Analysis Sequence Diagram]}
-
-\textit{Image Description: UML 2.5 sequence diagram for stock investment analysis. Actors/Objects: User, Web Dashboard, API Gateway, PSX Data Service, Stock Analysis Service, AI Recommendation Engine, Portfolio Service, Database. Flow: 1) User to Web Dashboard: Select stock symbol OGDC, 2) Web Dashboard to API Gateway: GET /api/v1/stocks/OGDC/analysis, 3) API Gateway to PSX Data Service: getStockData(OGDC), PSX Data Service to Database: query stock prices returns historicalPrices, PSX Data Service self-call: calculateTechnicalIndicators computing MA RSI MACD returns stockData, 4) API Gateway to Stock Analysis Service: performFundamentalAnalysis(OGDC), Stock Analysis Service to Database: query company financials returns financials, Stock Analysis Service calculates P/E and dividend yield returns fundamentals, 5) API Gateway to Portfolio Service: getUserHoldings returns currentPosition or null, 6) API Gateway to AI Recommendation Engine: generateRecommendation processes and returns recommendation with action confidence and reasons, 7) API Gateway combines all data, 8) API Gateway to Web Dashboard: 200 OK with stockData fundamentals recommendation currentPosition, 9) Web Dashboard to User: Display comprehensive analysis with charts and AI recommendation. Include loop frame showing for each technical indicator calculation. Use note annotations showing data freshness updated daily at 2 AM. Show async pattern with asynchronous message notation for AI recommendation. Color-code messages: blue for data retrieval, green for calculations, orange for AI processing, purple for display.}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/layer_2_dataflow.png}
+    \caption{Level 2 DFD - Selected Process Decomposition.}
+    \label{fig:level-2-dfd}
+\end{figure}
 
 \section{State Transition Diagrams}
 
@@ -310,45 +304,13 @@ State transition diagrams model the behavior of objects as they respond to event
 
 \textbf{[PLACEHOLDER IMAGE: User Knowledge Profile State Diagram]}
 
-\textit{Image Description: A UML 2.5 behavioral state machine diagram showing the lifecycle of a user's knowledge profile. States shown as rounded rectangles: Initial State (filled black circle) to New User state to Beginner state to Intermediate state to Advanced state to Final State (bull's-eye circle). New User state has entry action: entry / createEmptyProfile() and activity: do / showOnboardingWizard(). Transitions between states labeled with events and conditions: New User to Beginner: onboardingComplete / assessInitialKnowledge() (guard condition in brackets, action after slash). Beginner to Intermediate: conceptMasteryThreshold masteryScore > 60 percent / updateLearningPath() with annotation showing approximately 2-4 weeks typical duration. Intermediate to Advanced: masteryScore > 85 percent AND completedAdvancedModules / enableAdvancedFeatures(). Include self-transitions showing: Beginner state with interactionWithChatbot / updateMasteryScores(), Intermediate state with completeModule / incrementProgress(), awardBadge(). Add parallel state notation showing concurrent substates within each main state: Content Preference substate (Visual | Textual | Interactive) and Learning Pace substate (Fast | Medium | Slow). Include history state (H in circle) showing return to last substate when re-entering. Show decision point (diamond) for initial assessment: if score<40 percent goto Beginner, if 40-70 percent goto Intermediate, if >70 percent goto Advanced. Use different colors: light blue for beginner states, green for intermediate, dark blue for advanced. Add time annotations showing typical progression times. Include note boxes explaining key transitions and threshold calculations.}
+\textit{Image Description: A UML 2.5 behavioral state machine diagram showing user knowledge progression. States: Initial (filled circle) → Registration Complete → Beginner (entry: assessLevel) → Intermediate (trigger: conceptMastery > 60\%) → Advanced (trigger: conceptMastery > 85\%) → Final (bullseye circle). Self-transitions: Beginner state with trigger "chatInteraction" → updateMasteryScore; Intermediate state with trigger "moduleCompletion" → incrementProgress, awardBadge. Transitions include guard conditions in brackets [condition] and actions after slash /action. Alternative path: any state on error condition → Error State → resetProfile → Beginner. Include note boxes explaining mastery scoring. Use colors: light blue for beginner, green for intermediate, dark blue for advanced.}
 
-\subsection{Investment Transaction State Machine}
+\subsection{Portfolio Transaction State Machine}
 
-\textbf{[PLACEHOLDER IMAGE: Investment Transaction State Diagram]}
+\textbf{[PLACEHOLDER IMAGE: Transaction State Diagram]}
 
-\textit{Image Description: UML 2.5 state machine for investment transaction lifecycle. States: Initial (black dot) to Initiated (user starts transaction) to Pending Validation to Validated to Processing Payment to fork node splits to parallel states: Confirming with Exchange || Updating Portfolio || Generating Receipt to join node to Completed to Final (bull's-eye). Alternative paths from Pending Validation: validation fails to Failed Validation to Cancelled. From Processing Payment: payment fails to Payment Failed to Refund Initiated to Refunded to Final. Initiated state shows: entry / lockAssetPrice(), exit / releaseIfTimeout(), do / displayConfirmationDialog(). Processing Payment has internal substates: Authorizing Card to Charging Account to Confirming Transaction. Transitions labeled with events and guards: Initiated to Pending Validation: userConfirms / validateFunds(), checkMarketHours() showing multiple actions. Include timeout transitions: Pending Validation after 10 minutes to Timed Out to Cancelled. Use composite state for Processing Payment showing nested substates. Add exception transitions with exception/PaymentError to Payment Failed. Show history states for resuming interrupted transactions. Color-code states: yellow for initial stages, orange for processing, green for success paths, red for error paths, gray for cancelled. Include timing constraints as notes: Typical completion: 5-15 seconds, Timeout after: 10 minutes. Add junction pseudostate (filled circle) for decision logic after validation checking multiple conditions (sufficient funds AND market open AND valid instrument). Show entry/exit actions for each state with proper UML notation.}
-
-\section{Activity Diagrams}
-
-Activity diagrams model the workflow and business logic of system processes, showing the flow from activity to activity.
-
-\subsection{Mutual Fund Investment Decision Activity Diagram}
-
-\textbf{[PLACEHOLDER IMAGE: Mutual Fund Investment Activity Diagram]}
-
-\textit{Image Description: A comprehensive UML 2.5 activity diagram with swimlanes showing the mutual fund investment decision process. Four vertical swimlanes from left to right: User, Web Application, AI Recommendation Engine, Financial Data Service. Flow starts with initial node (filled circle) in User lane. User lane: Access Mutual Funds Section action then Specify Investment Criteria (showing inputs: amount, risk tolerance, time horizon). Arrow crosses to Web Application lane: Retrieve Available Funds action then Fetch Fund Performance Data which sends object flow (rectangle) Fund Data to Financial Data Service lane. Financial Data Service lane: fork node splits into three parallel activities: Get NAV History || Calculate Returns || Assess Risk Metrics then join node then sends Comprehensive Fund Analysis object back. Web Application receives data then decision node (diamond) if User wants AI recommendation, if yes then crosses to AI Recommendation Engine lane: Analyze User Profile then Match Funds to Profile then Generate Personalized Recommendations (with note: considers risk tolerance, goals, literacy level). If no from decision node then Display Fund Comparison Table. Both paths merge then User lane: Review Options then decision node if User satisfied with option, if no then loops back to Adjust Criteria (showing iteration). If yes then Select Fund then Enter Investment Amount then decision node if Amount within limits, if no then shows error flow to Display Error Message then loops back. If yes then Web Application: Initiate Transaction then Process Payment then fork into parallel: Update Portfolio || Send Confirmation Email || Log Transaction then join then Display Success Message then activity final node (bull's-eye). Include object nodes showing data flow: Investment Criteria object flowing from user input, Fund Rankings flowing between services, Transaction Receipt as final output. Add notes explaining key decision points: Min investment: PKR 500, Max per fund: PKR 5 million. Use expansion regions showing for each fund in top 10 processing. Include exception handling with activity edge labeled exception/InsufficientFunds then Notify User then merge back to amount entry. Color code swimlanes: light yellow for User, light blue for Web Application, light green for AI Engine, light purple for Data Service. Show time estimates as annotations: Typical completion: 2-3 minutes, AI recommendation: approximately 5 seconds. Include signal sending/receiving actions for email notifications using proper UML notation (convex pentagon shapes).}
-
-\subsection{Daily Data Update Activity Diagram}
-
-\textbf{[PLACEHOLDER IMAGE: Daily Data Update Activity Diagram]}
-
-\textit{Image Description: UML 2.5 activity diagram showing the automated daily financial data update process. Single swimlane representing Automated System with time-triggered start. Flow begins with initial node at 02:00 AM UTC shown as time event annotation. First action Initialize Update Job then fork node splitting into four parallel flows. Flow 1 PSX Data Update: Connect to PSX API then decision if API available, if no Log Error and Send Alert merge to join, if yes Fetch Stock Prices then Validate Data Integrity with note check for missing values and outliers then decision if Data valid, if no error flow, if yes Transform Data Format then Update PostgreSQL stock prices table then join. Flow 2 Mutual Funds Update: Scrape MUFAP Website then Extract NAV Data then Clean and Normalize then Update mutual funds table then join. Flow 3 News Aggregation: expansion region for each news source Fetch Articles then Filter Financial Content then Extract Entities stocks and companies then Store in PostgreSQL financial news table then join. Flow 4 Insurance Data Update: Check Insurance Provider APIs then decision if new products available, if yes Update Product Catalog, if no skip merge then join. After join node Clear Redis Cache then Generate Update Summary Report then decision if errors occurred, if yes Send Alert to Admin, if no Send Success Notification merge then Update Last Run Timestamp then activity final node. Include object nodes Raw API Response flowing between fetch and validate actions, Validated Data flowing to database update, Update Report as final output. Use interruptible activity region around entire process with exception edge labeled after 30 minutes timeout Cancel Job and Alert to final node. Add expansion region showing for each stock symbol in watchlist processing within PSX update. Include decision nodes with proper guard conditions in brackets. Show data store nodes cylinder shapes for PostgreSQL with read write flows, and Redis cache for temporary storage. Use colors light green for successful paths, light red for error paths, light blue for data processing actions. Add notes indicating Processes approximately 500 stocks, Updates approximately 200 mutual funds, Aggregates approximately 50 news articles. Show time estimates Total duration 15-20 minutes, PSX update 5-8 minutes, News aggregation 8-10 minutes. Include merge nodes before join to handle error flows. Show logging as concurrent activity using dashed lines to Logging Service in separate area.}
-
-\section{Data Flow Diagrams}
-
-Data Flow Diagrams illustrate how data moves through the Finasaan system, showing processes, data stores, and external entities.
-
-\subsection{Context Diagram (Level 0)}
-
-\textbf{[PLACEHOLDER IMAGE: Finasaan Context Diagram]}
-
-\textit{Image Description: A DFD context diagram showing the Finasaan system as a single central process (large circle labeled 0. Finasaan Financial Literacy Platform) with external entities and data flows. External entities shown as rectangles: User (top-left, stick figure icon), PSX Data Provider (top-right, building icon), MUFAP (right, document icon), Insurance Companies (bottom-right, insurance icon), FBR Tax Authority (bottom, government building icon), Financial News Sources (bottom-left, newspaper icon), Email Service (left, envelope icon). Data flows shown as labeled arrows: User to Finasaan: Registration Data, Investment Queries, Portfolio Transactions, Learning Interactions; Finasaan to User: Personalized Recommendations, Financial Reports, Educational Content, Market Insights. PSX to Finasaan: Real-time Stock Data, Company Fundamentals; MUFAP to Finasaan: Mutual Fund NAVs, Performance Metrics; Insurance Companies to Finasaan: Product Information, Premium Rates; FBR to Finasaan: Tax Policies, Tax Slabs; News Sources to Finasaan: Financial News Articles, Market Analysis; Finasaan to Email Service: Notification Requests; Email Service to User: Email Notifications (external flow). Style: Use double-lined rectangle for external entities, numbered circle for system process (0), arrows for data flows with clear labels. Color-code data flows: blue for input to system, green for output from system, red for external communications. Add system boundary (dashed rectangle) around central process indicating scope of Finasaan system. Include notation legend in corner explaining symbols. Use clear, readable font for all labels. Show bidirectional flows where appropriate with arrows on both ends.}
-
-\subsection{Level 1 Data Flow Diagram}
-
-\textbf{[PLACEHOLDER IMAGE: Finasaan Level 1 DFD]}
-
-\textit{Image Description: A detailed Level 1 DFD decomposing the Finasaan system into major processes. External entities at diagram edges: User (top-left), PSX (top-right), MUFAP (right), Insurance Providers (bottom-right), FBR (bottom), News Sources (bottom-left), Email Service (left). Central processes (numbered circles): 1.0 User Management receives Registration Data and Login Credentials from User, outputs User Profile to D1 Users datastore and Authentication Token to User. 2.0 Financial Data Aggregation receives stock data from PSX, mutual fund data from MUFAP, insurance data from providers, tax data from FBR, and news from sources; outputs to D2 Financial Data datastore. 3.0 AI Chatbot Service receives User Questions and reads from D1 Users and D2 Financial Data, outputs Personalized Responses to User. 4.0 Investment Analysis receives Investment Queries from User, reads from D2 Financial Data and D3 Portfolio datastore, outputs Analysis Reports to User. 5.0 Portfolio Management receives Transaction Requests from User, updates D3 Portfolio datastore, outputs Confirmation to User. 6.0 Notification Service receives Alerts from other processes, sends Notification Requests to Email Service. Data stores shown as parallel lines: D1 Users (user profiles and knowledge levels), D2 Financial Data (stocks, funds, insurance, news), D3 Portfolio (user investments and transactions), D4 Analytics (usage logs and metrics). Show data flows between all processes and datastores with labeled arrows indicating data type.}
+\textit{Image Description: A UML 2.5 state machine for investment transaction lifecycle. States: Initial → Initiated (entry: lockPrice) → Pending Validation (do: validateFunds) → Validated → Processing Payment → fork into parallel states: Confirming Exchange || Updating Portfolio || Generating Receipt → join → Completed → Final. Error paths: Pending Validation on validation failure → Failed Validation → Cancelled. Processing Payment on payment failure → Payment Failed → Refund Initiated → Refunded → Final. Include timeout transitions: Pending Validation after 10 min → Timeout → Cancelled. Transitions labeled with events and guards [conditions]. Color-code states: yellow initial, orange processing, green success, red errors.}
 
 % Chapter 5: Data Design
 \chapter{Data Design}
@@ -366,6 +328,12 @@ Major data entities are organized as follows:
 
 \section{Database Schema Overview}
 The following sections present the detailed database schemas for PostgreSQL, followed by the data dictionary.
+
+\subsection{Entity-Relationship Diagram}
+
+\textbf{[PLACEHOLDER IMAGE: PostgreSQL Entity-Relationship Diagram (ERD)]}
+
+\textit{Image Description: A comprehensive ER diagram showing the relational structure of Finasaan's PostgreSQL database. Main entities and their relationships: Users table (central entity) connects to user\_knowledge\_profiles (one-to-one), chat\_sessions (one-to-many), and portfolios (one-to-many). Portfolios connects to portfolio\_holdings (one-to-many) which references stocks and mutual\_funds tables. Stocks table relates to stock\_prices (one-to-many) and company\_announcements. Financial Data domain includes mutual\_funds, which connects to mutual\_fund\_nav\_history (one-to-many) and mutual\_fund\_holdings. Insurance domain includes insurance\_providers and insurance\_policies. Chat domain includes chat\_sessions connecting to chat\_messages (one-to-many). News domain includes financial\_news connecting to news\_entities (one-to-many). All relationships shown with crow's foot notation indicating cardinality (1:1, 1:N, N:N). Primary keys shown with PK designation, foreign keys with FK. Attributes listed for key entities showing data types.}
 
 \section{PostgreSQL Schema}
 

@@ -1,0 +1,36 @@
+flowchart TB
+    %% Level 0 DFD - Context Diagram
+
+    %% External Entities
+    User[("User")]
+    PSX[("PSX Data Provider")]
+    MUFAP[("MUFAP (Mutual Funds)")]
+    Ins[("Insurance Companies")]
+    FBR[("FBR Tax Authority")]
+    News[("Financial News Sources")]
+    Email[("Email Service")]
+
+    %% Central Process
+    System((0.0<br/>Finasaan Financial<br/>Literacy Platform))
+
+    %% User Flows
+    User -->|Registration, Queries, Portfolio Actions| System
+    System -->|Recommendations, Reports, Content, Insights| User
+
+    %% Data Provider Flows
+    PSX -->|Stock Data| System
+    MUFAP -->|Fund Data| System
+    Ins <-->|Insurance Products| System
+    FBR -->|Tax Information| System
+    News -->|Financial News| System
+
+    %% Notification Flows
+    System -->|Notification Requests| Email
+    Email -->|Email Notifications| User
+
+    %% Styling
+    classDef entity fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef process fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,shape:circle;
+    
+    class User,PSX,MUFAP,Ins,FBR,News,Email entity;
+    class System process;

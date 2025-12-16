@@ -1,0 +1,30 @@
+---
+config:
+  layout: dagre
+---
+flowchart TB
+ subgraph PublicAccess["Public Access – Production"]
+        CF["Cloudflare<br>DNS / CDN / WAF"]
+        FE["Frontend<br>Next.js<br>Cloudflare Worker"]
+  end
+ subgraph Backend["Backend Services"]
+        APIUser["Backend – User<br>Hono on Workers"]
+        APIAdmin["Backend – Admin<br>Hono on Workers"]
+  end
+ subgraph Data["Data & Storage"]
+        KV["Cloudflare KV"]
+        DO["Durable Objects"]
+        Secrets["Cloudflare Secret Manager"]
+        R2["Cloudflare R2"]
+        DB[("PostgreSQL")]
+  end
+    User["User"] --> CF
+    CF --> FE
+    FE --> APIUser
+    APIUser --> KV & DO & R2 & DB & Secrets
+    APIAdmin --> DB & AIGW["AI Gateway"]
+    AIGW --> Groq["Groq AI"]
+    Scrapers["AWS Lambda<br>Scrapers"] --> APIAdmin
+    GitHub["GitHub Actions<br>CI/CD Pipeline"] --> FE & APIUser & APIAdmin
+    Analytics["PostHog<br>Analytics"] --> FE
+    IaC["Infrastructure as Code<br>Terraform &amp; Wrangler"] --> CF & FE & APIUser & APIAdmin

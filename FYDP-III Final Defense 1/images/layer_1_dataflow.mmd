@@ -1,0 +1,68 @@
+flowchart TB
+    %% Level 1 DFD
+
+    %% --- External Entities ---
+    User[("User")]
+    Ext_Data[("External Sources<br/>(PSX, FBR, MUFAP, News)")]
+    Email_Svc[("Email Service")]
+
+    %% --- Processes ---
+    P1((1.0<br/>User Management))
+    P2((2.0<br/>Financial Data<br/>Aggregation))
+    P3((3.0<br/>AI Chatbot Service))
+    P4((4.0<br/>Portfolio Management))
+    P5((5.0<br/>Investment Analysis))
+    P6((6.0<br/>Notification Service))
+
+    %% --- Data Stores (PostgreSQL Tables) ---
+    D1[("D1: Users")]
+    D2[("D2: Financial Data")]
+    D3[("D3: Portfolios")]
+    D4[("D4: Analytics/Logs")]
+
+    %% --- Data Flows ---
+
+    %% 1.0 User Management
+    User -->|Reg Data, Login| P1
+    P1 -->|Auth Token, Profile| User
+    P1 -->|Store/Update Profile| D1
+    D1 -->|Read Profile| P1
+
+    %% 2.0 Aggregation
+    Ext_Data -->|Raw Market/Tax Data| P2
+    P2 -->|Normalized Data| D2
+
+    %% 3.0 AI Chatbot (Groq based)
+    User -->|Questions| P3
+    P3 -->|Answers| User
+    D1 -.->|User Context| P3
+    D2 -.->|Market Context| P3
+    P3 -.->|Log Queries| D4
+
+    %% 4.0 Portfolio
+    User -->|Transactions| P4
+    P4 -->|Confirmations| User
+    P4 -->|Update Holdings| D3
+    D3 -->|Current State| P4
+    D2 -.->|Asset Prices| P4
+
+    %% 5.0 Investment Analysis
+    User -->|Analysis Request| P5
+    P5 -->|Reports| User
+    D3 -.->|Portfolio Data| P5
+    D2 -.->|Market Data| P5
+
+    %% 6.0 Notifications
+    P4 -.->|Trigger Alert| P6
+    P5 -.->|Trigger Alert| P6
+    P6 -->|Send Request| Email_Svc
+    Email_Svc -->|Email| User
+
+    %% Styling
+    classDef entity fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef process fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef store fill:#e0e0e0,stroke:#616161,stroke-width:2px,shape:cylinder;
+
+    class User,Ext_Data,Email_Svc entity;
+    class P1,P2,P3,P4,P5,P6 process;
+    class D1,D2,D3,D4 store;
