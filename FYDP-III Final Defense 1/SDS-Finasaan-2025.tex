@@ -12,6 +12,42 @@
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tocloft}
+
+% SQL Code Styling
+\definecolor{sqlkeyword}{RGB}{0,0,180}
+\definecolor{sqlstring}{RGB}{0,128,0}
+\definecolor{sqlcomment}{RGB}{128,128,128}
+
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{sqlkeyword}\bfseries,
+    stringstyle=\color{sqlstring},
+    commentstyle=\color{sqlcomment}\itshape,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!5},
+    numbers=none,
+    morekeywords={SERIAL, BIGSERIAL, UUID, BOOLEAN, TIMESTAMP, TIMESTAMPTZ, 
+                  DECIMAL, VARCHAR, TEXT, DATE, BIGINT, INTEGER, INT,
+                  VECTOR, ENUM, CHECK, REFERENCES, DEFAULT, UNIQUE,
+                  gen_random_uuid, CURRENT_TIMESTAMP, PRIMARY, KEY,
+                  CREATE, TABLE, INDEX, ON, USING, WITH, ivfflat,
+                  vector_cosine_ops, lists, CASCADE, NOT, NULL, IN, AND}
+}
+
+\lstset{style=sqlstyle}
+
+% Custom List of Diagrams
+\newcommand{\listdiagramname}{List of Diagrams}
+\newlistof{diagram}{dia}{\listdiagramname}
+\newcommand{\diagram}[1]{%
+    \refstepcounter{diagram}
+    \addcontentsline{dia}{diagram}{\protect\numberline{\thediagram}#1}\par}
 
 % Page setup
 \geometry{margin=1in}
@@ -55,11 +91,14 @@
     \vspace{2cm}
     
     {\large
-    \textbf{Supervisor:}\\
-    {[}Supervisor Name{]}\\
+    \textbf{Advisor:}\\
+    Dr. Farzana Jabeen\\
     \vspace{0.5cm}
-    \textbf{Co-Supervisor (if any):}\\
-    {[}Co-Supervisor Name{]}\\
+    \textbf{Co-Advisor:}\\
+    Huzaifa Sarfaraz\\
+    \vspace{0.5cm}
+    \textbf{KG Committee Members:}\\
+    Dr. Aimal Rextin, Dr. Hirra Anwar\\
     }
     \vfill
     
@@ -79,12 +118,14 @@
 \tableofcontents
 \listoftables
 \listoffigures
+\listofdiagram
 
 % Revision History
 \chapter*{Revision History}
 \addcontentsline{toc}{chapter}{Revision History}
 
 \begin{longtable}{|p{3cm}|p{3cm}|p{5cm}|p{2cm}|}
+\caption{Document Revision History} \label{tab:revision-history} \\
 \hline
 \textbf{Name} & \textbf{Date} & \textbf{Reason for changes} & \textbf{Version} \\
 \hline
@@ -93,9 +134,13 @@
 \textbf{Name} & \textbf{Date} & \textbf{Reason for changes} & \textbf{Version} \\
 \hline
 \endhead
-Finasaan Team & \today & Initial Draft from SRS Document & 1.0 \\
+Finasaan Team & December 10, 2024 & Initial draft created from SRS document; defined system architecture and data models & 1.0 \\
 \hline
- & & & \\
+M. Muzamil Kaleem & December 12, 2024 & Added activity diagrams, DFDs, and state transition diagrams; refined database schema & 1.1 \\
+\hline
+M. Hadi Khan & December 16, 2024 & Completed UI design chapter with screenshots; added screen objects and actions & 1.2 \\
+\hline
+S. Aman Hussain & December 16, 2024 & Finalized data dictionary; added vector embeddings storage section & 1.3 \\
 \hline
 \end{longtable}
 
@@ -104,9 +149,9 @@ Finasaan Team & \today & Initial Draft from SRS Document & 1.0 \\
 \addcontentsline{toc}{chapter}{Application Evaluation History}
 
 \begin{longtable}{|p{7cm}|p{7cm}|}
+\caption{Application Evaluation History} \label{tab:evaluation-history} \\
 \hline
 \textbf{Comments (by committee)} & \textbf{Action Taken} \\
-\textbf{*include the ones given at scope time both in doc and presentation} & \\
 \hline
 \endfirsthead
 \hline
@@ -120,8 +165,8 @@ Finasaan Team & \today & Initial Draft from SRS Document & 1.0 \\
 \end{longtable}
 
 \vspace{1cm}
-\noindent\textbf{Supervised by}\\
-\textbf{[Supervisor Name]}\\
+\noindent\textbf{Advised by}\\
+\textbf{Dr. Farzana Jabeen}\\
 Signature\hspace{2cm}\rule{5cm}{0.4pt}
 
 % Chapter 1: Introduction
@@ -207,6 +252,7 @@ Finasaan follows a modern layered architecture optimized for scalability and mai
     \caption{High-level Finasaan system architecture.}
     \label{fig:overall-architecture}
 \end{figure}
+\diagram{Box-and-Line Architecture Diagram}
 
 % See Figure~\ref{fig:overall-architecture} for the overall architecture diagram.
 
@@ -245,13 +291,18 @@ Activity diagrams model the workflow and business logic of system processes, sho
 
 \subsection{User Registration and Onboarding Activity Diagram}
 
+This diagram walks through what happens when a new user signs up for Finasaan. The flow starts with the user entering their basic info like email and password. The web app validates everything first -- if the email format's wrong or password's too weak, it kicks them back with an error. Once validation passes, the backend checks if that email already exists in our database. New emails get a user account created, and we fire off a verification email. The user clicks the link, backend confirms verification, and we enable their account. Pretty standard stuff, but we've added a retry option in case the verification link expires or something goes wrong.
+
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{images/user_registration_activity_diagram.png}
     \caption{User Registration and Onboarding Activity Diagram.}
     \label{fig:user-registration-activity}
 \end{figure}
+\diagram{User Registration Activity Diagram}
 \subsection{Financial Data Aggregation and Update Activity Diagram}
+
+This one shows how we keep our financial data fresh. The job can kick off either manually (admin triggers it) or automatically through scheduled cron jobs. First thing we do is check if the external API is up -- if it is, we just hit the API directly. If not, we fall back to scraping. For lightweight scrapes, our admin worker handles it internally. Heavy jobs get offloaded to AWS Lambda so we don't block the main worker. All the scraped data goes through validation and normalization before we dump it into PostgreSQL and R2 storage. The interesting bit is the embedding generation -- after storing raw data, we generate vector embeddings through our AI pipeline (Groq via the AI Gateway) and store those in pgvector for semantic search. If anything fails along the way, we notify the admin and update the job metadata either way.
 
 \begin{figure}[htb]
     \centering
@@ -259,7 +310,10 @@ Activity diagrams model the workflow and business logic of system processes, sho
     \caption{Financial Data Aggregation and Update Activity Diagram.}
     \label{fig:financial-data-aggregation-activity}
 \end{figure}
+\diagram{Financial Data Aggregation Activity Diagram}
 \subsection{AI Chatbot Query Processing Activity Diagram}
+
+This is probably the most complex flow in our system. When a user submits a question, the frontend first validates the input (can't have empty messages or super long queries). Valid requests go to our Hono backend where we authenticate the user and check rate limits. Then we fetch the user's profile -- checking KV cache first, falling back to PostgreSQL on cache miss. Here's where it gets interesting: we analyze the query complexity. Simple chitchat goes straight to prompt construction, but knowledge-heavy questions trigger our RAG pipeline. The RAG flow generates an embedding for the query, does a vector search in pgvector to find relevant chunks from our knowledge base, and attaches those as context. The constructed prompt (with user level info and retrieved context) gets sent to Groq. We stream the response back, adapt the tone based on user's knowledge level, append source citations, and render it with proper Markdown/LaTeX formatting. Error handling's built in throughout -- timeouts or API failures get caught and displayed gracefully.
 
 \begin{figure}[htb]
     \centering
@@ -267,6 +321,7 @@ Activity diagrams model the workflow and business logic of system processes, sho
     \caption{AI Chatbot Query Processing Activity Diagram.}
     \label{fig:ai-chatbot-query-processing-activity}
 \end{figure}
+\diagram{AI Chatbot Query Processing Activity Diagram}
 
 \section{Data Flow Diagrams}
 
@@ -280,6 +335,7 @@ Data Flow Diagrams illustrate how data moves through the Finasaan system, showin
     \caption{Context Diagram (Level 0 DFD).}
     \label{fig:context-diagram-level-0}
 \end{figure}
+\diagram{Context Diagram (Level 0 DFD)}
 \subsection{Level 1 DFD - System Decomposition}
 
 \begin{figure}[htb]
@@ -288,6 +344,7 @@ Data Flow Diagrams illustrate how data moves through the Finasaan system, showin
     \caption{Level 1 DFD - System Decomposition.}
     \label{fig:level-1-dfd}
 \end{figure}
+\diagram{Level 1 DFD - System Decomposition}
 
 \subsection{Level 2 DFD - Selected Process Decomposition}
 
@@ -297,6 +354,7 @@ Data Flow Diagrams illustrate how data moves through the Finasaan system, showin
     \caption{Level 2 DFD - Selected Process Decomposition.}
     \label{fig:level-2-dfd}
 \end{figure}
+\diagram{Level 2 DFD - Selected Process Decomposition}
 
 \section{State Transition Diagrams}
 
@@ -310,6 +368,7 @@ State transition diagrams model the behavior of objects as they respond to event
     \caption{Data Ingestion and AI Enrichment State Machine.}
     \label{fig:data-ingestion-ai-enrichment-state-machine}
 \end{figure}
+\diagram{Data Ingestion State Transition Diagram}
 
 \subsection{User Research Session State Machine}
 
@@ -319,6 +378,7 @@ State transition diagrams model the behavior of objects as they respond to event
     \caption{User Research Session State Machine.}
     \label{fig:user-research-session-state-machine}
 \end{figure}
+\diagram{User Research State Transition Diagram}
 % Chapter 5: Data Design
 \chapter{Data Design}
 
@@ -343,10 +403,11 @@ The following sections present the detailed database schemas for PostgreSQL, fol
     \caption{Entity-Relationship Diagram (ERD) of Finasaan's PostgreSQL Database.}
     \label{fig:entity-relationship-diagram}
 \end{figure}
+\diagram{Entity-Relationship Diagram (ERD)}
 \section{PostgreSQL Schema}
 
 \subsection{Users Table}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -359,10 +420,10 @@ CREATE TABLE users (
     is_active BOOLEAN DEFAULT true,
     email_verified BOOLEAN DEFAULT false
 );
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Stocks Table}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE stocks (
     stock_id SERIAL PRIMARY KEY,
     symbol VARCHAR(10) UNIQUE NOT NULL,
@@ -373,10 +434,10 @@ CREATE TABLE stocks (
     dividend_yield DECIMAL(5, 2),
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Stock Prices Table}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE stock_prices (
     price_id SERIAL PRIMARY KEY,
     stock_id INTEGER REFERENCES stocks(stock_id),
@@ -390,10 +451,10 @@ CREATE TABLE stock_prices (
 );
 CREATE INDEX idx_stock_prices_date ON stock_prices(date DESC);
 CREATE INDEX idx_stock_prices_stock_id ON stock_prices(stock_id);
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Mutual Funds Table}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE mutual_funds (
     fund_id SERIAL PRIMARY KEY,
     fund_name VARCHAR(255) NOT NULL,
@@ -405,10 +466,10 @@ CREATE TABLE mutual_funds (
     inception_date DATE,
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Portfolios Table}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE portfolios (
     portfolio_id SERIAL PRIMARY KEY,
     user_id UUID REFERENCES users(user_id),
@@ -426,12 +487,12 @@ CREATE TABLE portfolio_holdings (
     purchase_date DATE,
     UNIQUE(portfolio_id, asset_type, asset_id)
 );
-\end{verbatim}
+\end{lstlisting}
 
 \section{Additional PostgreSQL Tables for User Interaction Data}
 
 \subsection{User Knowledge Profiles}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE user_knowledge_profiles (
     profile_id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(user_id),
@@ -454,10 +515,10 @@ CREATE TABLE user_interaction_history (
     questions_asked INTEGER,
     understood BOOLEAN
 );
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Chat Sessions}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE chat_sessions (
     session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id INTEGER REFERENCES users(user_id),
@@ -477,10 +538,10 @@ CREATE TABLE chat_messages (
         ('beginner', 'intermediate', 'advanced')),
     sources TEXT[]
 );
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Financial News}
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE financial_news (
     news_id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
@@ -505,14 +566,14 @@ CREATE TABLE news_entities (
 CREATE INDEX idx_financial_news_date ON financial_news(published_date);
 CREATE INDEX idx_financial_news_source ON financial_news(source);
 CREATE INDEX idx_news_entities_type ON news_entities(entity_type, entity_value);
-\end{verbatim}
+\end{lstlisting}
 
 \section{Vector Embeddings Storage}
 
 \subsection{Knowledge Base Vectors in PostgreSQL}
 Vector embeddings are stored in PostgreSQL tables using the pgvector extension, enabling efficient similarity search for RAG operations. Embeddings are stored as 768-dimensional vectors alongside metadata for retrieval.
 
-\begin{verbatim}
+\begin{lstlisting}
 CREATE TABLE knowledge_base_vectors (
     id SERIAL PRIMARY KEY,
     document_id VARCHAR(255) UNIQUE NOT NULL,
@@ -530,7 +591,7 @@ CREATE TABLE knowledge_base_vectors (
 CREATE INDEX ON knowledge_base_vectors 
     USING ivfflat (embedding vector_cosine_ops)
     WITH (lists = 100);
-\end{verbatim}
+\end{lstlisting}
 
 \section{Data Dictionary}
 
